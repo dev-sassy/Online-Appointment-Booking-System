@@ -180,13 +180,13 @@
                     <li>
                         <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <img src="<?php echo base_url(); ?>assets/images/photos/user-avatar.png" alt="" />
-                            John Doe
+                            <?php echo $this->session->userdata('user_name'); ?>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
                             <li><a href="#"><i class="fa fa-user"></i>  Profile</a></li>
                             <li><a href="#"><i class="fa fa-cog"></i>  Settings</a></li>
-                            <li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                            <li><a href="<?php echo base_url().'admin/logout' ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>
 

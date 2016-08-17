@@ -23,7 +23,11 @@ class doctor extends CI_Controller {
 		$this->load->model('doctor_model');	
 		$data['dr'] = $this->doctor_model->fetch_doctor();
 		$data['dr_count'] = count($data['dr']);
-		$this->load->view('view_doctor',$data);
+                $data['title'] = "Doctor View";
+                $data['parent'] = "Doctor";
+                $data['child'] = "View Doctor";        
+		$data['content'] = $this->load->view("view_doctor",$data,true);
+		$this->load->view("default_layout",$data);
 		/*echo "<pre>";
 		print_r($data);
 		die;*/
