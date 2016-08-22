@@ -1,5 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<!DOCTYPE HTML>
+<html lang="en">
 <?php
 $data[''] = '';
 $this->load->view('head',$data);
@@ -49,6 +49,18 @@ $this->load->view('head',$data);
 </section>
 <?php 
 $this->load->view('footer');
+?>
+<?php
+if (isset($js)) {
+    foreach ($js as $val) {
+        echo '<script type="text/javascript" src="' . base_url() . 'assets/js/' . $val . '.js"></script>';
+    }
+}
+if (isset($externaljs)) {
+    foreach ($externaljs as $val) {
+        echo '<script type="text/javascript" src="' . $val . '"></script>';
+    }
+}
 ?>
 </body>
 </html>

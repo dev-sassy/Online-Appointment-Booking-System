@@ -43,6 +43,13 @@
                     <li><a href="<?php echo base_url().'doctor/add_doctor' ?>"> Add Doctor</a></li>
                 </ul>
             </li>
+            
+            <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Patient</span></a>
+                <ul class="sub-menu-list">
+                    <li><a href="<?php echo base_url().'patient' ?>"> View All Patient</a></li>
+                    <li><a href="<?php echo base_url().'patient/add_patient' ?>"> Add Patient</a></li>
+                </ul>
+            </li>
 
             <li class="menu-list"><a href=""><i class="fa fa-archive"></i> <span> Categories</span></a>
                 <ul class="sub-menu-list">

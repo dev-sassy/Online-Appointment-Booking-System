@@ -53,7 +53,8 @@
 
 <!-- validation -->
   <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/validation-init.js"></script>
+<!--  <script src="<?php echo base_url(); ?>assets/js/validation-init.js"></script>-->
+  <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/additional-methods.min.js"></script>
   <!-- validation -->
   
 <!--pickers plugins-->

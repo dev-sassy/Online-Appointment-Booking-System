@@ -43,7 +43,13 @@
     <!--file upload-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-fileupload.min.css" />
     <!--file upload-->
-
+    <?php 
+     if (isset($css)) {
+        foreach ($css as $val) {
+         echo '<link href="' . base_url() . 'assets/css/' . $val . '.css" rel="stylesheet" type="text/css" />';
+        }
+    } 
+    ?>
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
   <script src="js/html5shiv.js"></script>
