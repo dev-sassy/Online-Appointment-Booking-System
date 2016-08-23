@@ -2,11 +2,11 @@
     <div class="col-md-12">
         <section class="panel">
             <header class="panel-heading">
-                Add Doctor
+                Add Admin Staff
             </header>
             <div class="panel-body">
                 <div class="col-md-6">
-                    <form id="add_dr_form" role="form" class="cmxform form-horizontal adminex-form" method="post">
+                    <form id="add_asd_form" role="form" class="cmxform form-horizontal adminex-form" method="post">
                         <div class="form-group clearfix">
                             <div class="col-md-12">
                                 <label for="exampleInputEmail1">First Name : </label>
@@ -15,8 +15,14 @@
                         </div>
                         <div class="form-group clearfix">
                             <div class="col-md-12">
+                                <label for="exampleInputEmail1">Last Name : </label>
+                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" maxlength="25"  />
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="col-md-12">
                                 <label for="exampleInputEmail1">User Name : </label>
-                                <input type="text" class="form-control" name="username" value="DRS<?php echo $next_user_id; ?>" id="username" placeholder="User Name" maxlength="10"  readonly />
+                                <input type="text" class="form-control" name="username" value="ADS<?php echo $next_user_id; ?>" id="username" placeholder="User Name" maxlength="10"  readonly />
                                 <label id="mail_err"></label>
                             </div>
                         </div>
@@ -34,13 +40,13 @@
                         </div>
                         <div class="form-group clearfix">
                             <div class="col-md-12">
-                                <label for="exampleInputEmail1">Doctor Email : </label>
-                                <input type="text" class="form-control" name="dr_email" id="dr_email" placeholder="Doctor Email" maxlength="30"  />
+                                <label for="exampleInputEmail1">Email : </label>
+                                <input type="text" class="form-control" name="email" id="email" placeholder="Admin Staff Email" maxlength="30"  />
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-primary" name="add_dr" id="add_dr" value="Add Doctor"/>
-                            <a href="<?php echo base_url() . 'doctor' ?>" class="btn btn-default"> Cancel </a>                            
+                            <input type="submit" class="btn btn-primary" name="add_ads" id="add_ads" value="Add Admin Staff"/>
+                            <a href="<?php echo base_url() . 'admin_Staff' ?>" class="btn btn-default"> Cancel </a>                            
                         </div>
                     </form>
                 </div>

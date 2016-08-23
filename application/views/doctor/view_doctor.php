@@ -46,10 +46,10 @@
                                             <?php echo $dr_list->dr_email; ?>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url() . 'doctor/edit_doctor/' . $dr_list->dr_id; ?>">Edit</a>
+                                            <a href="<?php echo base_url() . 'doctor/edit_doctor/' . $dr_list->dr_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url() . 'doctor/del_doctor/' . $dr_list->dr_id; ?>" onclick="return confirm('are you sure?')">Delete</a>
+                                            <a href="<?php echo base_url() . 'doctor/del_doctor/' . $dr_list->dr_id; ?>" onclick="return confirm('are you sure?')"><i class="fa fa-times" aria-hidden="true" title="Delete"></i></a>
                                         </td>
                                     </tr>
                                 <?php }

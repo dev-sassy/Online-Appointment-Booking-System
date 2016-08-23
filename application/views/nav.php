@@ -50,14 +50,13 @@
                     <li><a href="<?php echo base_url().'patient/add_patient' ?>"> Add Patient</a></li>
                 </ul>
             </li>
-
-            <li class="menu-list"><a href=""><i class="fa fa-archive"></i> <span> Categories</span></a>
+            
+            <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Admin Staff</span></a>
                 <ul class="sub-menu-list">
-                    <li><a href="categories-view.php"> View All Categories</a></li>
-                    <li><a href=""> Edit Categories</a></li>
+                    <li><a href="<?php echo base_url().'admin_staff' ?>"> View All Admin Staff</a></li>
+                    <li><a href="<?php echo base_url().'admin_staff/add_admin_staff' ?>"> Add Admin Staff</a></li>
                 </ul>
             </li>
-
 
             <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Training Details</span></a>
                 <ul class="sub-menu-list">

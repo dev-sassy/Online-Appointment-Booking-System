@@ -22,22 +22,11 @@
                         <div class="form-group clearfix">
                             <div class="col-md-12">
                                 <label for="exampleInputEmail1">User Name : </label>
-                                <input type="text" class="form-control" name="username" id="username" placeholder="User Name" maxlength="25"  />
+                                <input type="text" class="form-control" name="username" id="username" value="PS<?php echo $next_user_id; ?>" placeholder="User Name" maxlength="25"  readonly />
                                 <label id="mail_err"></label>
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Password : </label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" maxlength="14"  />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Verify Password : </label>
-                                <input type="password" class="form-control" name="verify_password" id="verify_password" placeholder="Verify Password" maxlength="14"  />
-                            </div>
-                        </div>
+                        
                         <div class="form-group clearfix">
                             <div class="col-md-12">
                                 <label for="exampleInputEmail1">Paitent Email : </label>

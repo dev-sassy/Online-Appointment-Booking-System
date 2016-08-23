@@ -8,6 +8,7 @@ class patient extends CI_Controller {
     function patient() {
         parent :: __construct();
         $this->load->model('patient_model');
+        $this->load->helper('string');
     }
 
     /*
@@ -34,12 +35,19 @@ class patient extends CI_Controller {
 
     function add_patient() {
         if ($this->session->userdata('user_name')) {
+            $pass = random_string('alnum', 6);
+            $next_user_id = (int) 1;
+            $data['last_p_id'] = $this->patient_model->fetch_last_p_id();
+            if ($data['last_p_id']) {
+                $next_user_id = (int) $data['last_p_id'] + 1;
+            }
+            $data['next_user_id'] = str_pad($next_user_id, 4, '0', STR_PAD_LEFT);
             $data['title'] = "Add Patient";
             $data['js'] = array("patient");
             $data['content'] = $this->load->view("patient/add_patient", $data, true);
             $this->load->view("default_layout", $data);
             if ($this->input->post('add_p')) {
-                $this->patient_model->add_paitent();
+                $this->patient_model->add_paitent($pass);
             }
         } else {
             redirect(base_url());
@@ -87,6 +95,21 @@ class patient extends CI_Controller {
             $this->load->view("default_layout", $data);
             if ($this->input->post('update_p')) {
                 $this->patient_model->update_patient($id);
+            }
+        } else {
+            redirect(base_url());
+        }
+    }
+
+    function add_diagnosis() {
+        if ($this->session->userdata('user_name')) {
+            $data['title'] = "Add Diagnosis";
+            $data['js'] = array("diagnosis");
+            $data['content'] = $this->load->view("diagnosis/add_diagnosis", $data, true);
+            $this->load->view("default_layout", $data);
+            if ($this->input->post('add_pdr')) {
+                $p_id = $this->uri->segment(3);
+                $this->patient_model->add_diagnosis($p_id);
             }
         } else {
             redirect(base_url());

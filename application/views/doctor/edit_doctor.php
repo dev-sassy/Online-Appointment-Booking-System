@@ -22,6 +22,7 @@
                             <div class="col-md-12">
                                 <label for="exampleInputEmail1">Doctor Email : </label>
                                 <input type="text" class="form-control" id="dr_email" name="dr_email" maxlength="50" value="<?php echo $dr[0]['dr_email'] ?>" placeholder="Doctor Email" />
+                                <label id="mail_err"></label>
                             </div>
                         </div>
                         <div class="col-md-12">

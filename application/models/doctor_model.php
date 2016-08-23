@@ -1,27 +1,45 @@
 <?php
 
 class doctor_model extends CI_Model {
+
+    function doctor_model() {
+        parent :: __construct();
+        $this->table = "doctor_master";
+    }
+
     /*
      * Function Name : add_doctor()
      * Purpose : Add new doctor to doctor master table and redirect to doctor view page
      */
 
     function add_doctor() {
-        $firstname = trim($this->input->post('firstname'));
-        $user_name = trim($this->input->post('username'));
-        $pass = md5($this->input->post('password'));
-        $email = trim($this->input->post('dr_email'));
-        $data = array("dr_name" => $firstname,
-            "dr_user_name" => $user_name,
-            "dr_password" => $pass,
-            "dr_email" => $email,
+        $data = array("dr_name" => trim($this->input->post('firstname')),
+            "dr_user_name" => trim($this->input->post('username')),
+            "dr_password" => md5($this->input->post('password')),
+            "dr_email" => trim($this->input->post('dr_email')),
             "is_deleted" => (int) 0,
             "created_on" => date('Y-m-d'),
             "updated_on" => date('Y-m-d')
         );
 
-        $this->db->insert('doctor_master', $data);
+        $this->db->insert($this->table, $data);
         redirect(base_url() . 'doctor');
+    }
+
+    /*
+     * Function Name : fetch_last_dr_id()
+     * Purpose : Fetch Maximum doctor id for autonaming of username field in doctor master
+     */
+
+    function fetch_last_dr_id() {
+        $this->db->select_max("dr_id");
+        $q = $this->db->get($this->table);
+        if ($q->num_rows() >= 1) {
+            foreach ($q->result_array() as $row) {
+                return $row['dr_id'];
+                //echo $row['dr_id'];die;
+            }
+        }
     }
 
     /*
@@ -32,7 +50,7 @@ class doctor_model extends CI_Model {
     function fetch_doctor() {
         $this->db->select('*');
         $this->db->where('is_deleted', (int) 0);
-        $q = $this->db->get('doctor_master');
+        $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result();
         }
@@ -46,7 +64,7 @@ class doctor_model extends CI_Model {
     function del_doctor($id) {
         $data = array('is_deleted' => (int) 1);
         $this->db->where("dr_id", $id);
-        $this->db->update("doctor_master", $data);
+        $this->db->update($this->table, $data);
         redirect(base_url() . 'doctor');
     }
 
@@ -57,7 +75,7 @@ class doctor_model extends CI_Model {
 
     function edit_doctor($id) {
         $this->db->where("dr_id", $id);
-        $q = $this->db->get("doctor_master");
+        $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result_array();
         }
@@ -75,7 +93,7 @@ class doctor_model extends CI_Model {
             "dr_email" => $email,
             "updated_on" => date('Y-m-d'));
         $this->db->where('dr_id', $id);
-        $this->db->update('doctor_master', $data);
+        $this->db->update($this->table, $data);
         redirect(base_url() . 'doctor');
     }
 

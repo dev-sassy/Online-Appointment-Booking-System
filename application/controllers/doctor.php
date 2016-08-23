@@ -16,11 +16,15 @@ class doctor extends CI_Controller {
      */
 
     public function index() {
-        $data['dr'] = $this->doctor_model->fetch_doctor();
-        $data['dr_count'] = count($data['dr']);
-        $data['title'] = "Doctor View";
-        $data['content'] = $this->load->view("doctor/view_doctor", $data, true);
-        $this->load->view("default_layout", $data);
+        if ($this->session->userdata('user_name')) {
+            $data['dr'] = $this->doctor_model->fetch_doctor();
+            $data['dr_count'] = count($data['dr']);
+            $data['title'] = "Doctor View";
+            $data['content'] = $this->load->view("doctor/view_doctor", $data, true);
+            $this->load->view("default_layout", $data);
+        } else {
+            redirect(base_url());
+        }
     }
 
     /*
@@ -30,6 +34,12 @@ class doctor extends CI_Controller {
 
     function add_doctor() {
         if ($this->session->userdata('user_name')) {
+            $next_user_id = (int) 1;
+            $data['last_dr_id'] = $this->doctor_model->fetch_last_dr_id();
+            if ($data['last_dr_id']) {
+                $next_user_id = (int) $data['last_dr_id'] + 1;
+            }
+            $data['next_user_id'] = str_pad($next_user_id, 3, '0', STR_PAD_LEFT);
             $data['title'] = "Add Doctor";
             $data['js'] = array("doctor");
             $data['content'] = $this->load->view("doctor/add_doctor", $data, true);
