@@ -36,7 +36,7 @@
 
     <!-- Modal -->
     <form id="forgetpasswordForm" role="form" class="form-signin" method="post" 
-          action="<?php echo base_url(); ?>users/forgot_password">
+          action="<?php echo base_url() . $this->session->userdata("route_path"); ?>/forgot_password">
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

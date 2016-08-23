@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class users extends CI_Controller {
+class user_login extends CI_Controller {
 
     /**
      * Index Page for this controller.
@@ -19,19 +19,25 @@ class users extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+    private $route_path;
+
     public function __construct() {
         parent:: __construct();
         $this->load->library('encrypt');
-        $this->load->model('admin_model');
+        $this->load->model('user_login_model');
     }
 
     public function index() {
-        $check_login["status"] = '';        
+        $check_login["status"] = '';
+        $this->route_path = $_SERVER['PATH_INFO'];
+        $this->route_path = ltrim($this->route_path, '/');
+        $this->session->set_userdata('route_path', $this->route_path);
 
         if ($this->input->post('chk_login')) {
-            $check_login["status"] = $this->admin_model->chk_login();
+            $check_login["status"] = $this->user_login_model->chk_login();
         }
-        $this->load->view('admin_login', $check_login);
+
+        $this->load->view($this->route_path, $check_login);
     }
 
     function success_login() {
@@ -41,21 +47,20 @@ class users extends CI_Controller {
             $data['content'] = $this->load->view("dashboard", '', TRUE);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
     function logout() {
         $this->session->unset_userdata('user_name');
-        redirect(base_url());
+        redirect(base_url() . $this->session->userdata('route_path'));
     }
 
     function forgot_password() {
         $check_email["status"] = '';
 
-        $this->load->model('admin_model');
         if ($this->input->post('forget_email')) {
-            $check_email["status"] = $this->admin_model->check_email_exists();
+            $check_email["status"] = $this->user_login_model->check_email_exists();
         }
         $this->load->view("forgot_password", $check_email);
     }
@@ -71,7 +76,7 @@ class users extends CI_Controller {
         );
 
         if ($this->input->post('reset_password')) {
-            $query = $this->admin_model->reset_user_password($reset_email);
+            $query = $this->user_login_model->reset_user_password($reset_email);
             $reset_status["status"] = $query['status'];
             $reset_status["isSuccess"] = $query['isSuccess'];
         }

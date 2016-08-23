@@ -2,21 +2,24 @@
 
 <div class="login-body">
 
-    <?php if ($isSuccess) { ?>
-        <div style="margin-bottom: 0;" class="alert alert-success" id="edit_succ">
-            <h6> 
-                <?php echo $status; ?>  
-                <span id="redirect_message"></span>
+    <?php if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if ($isSuccess) {
+            ?>
+            <div style="margin-bottom: 0;" class="alert alert-success" id="edit_succ">
+                <h6> 
+        <?php echo $status; ?>  
+                    <span id="redirect_message"></span>
+                </h6>
                 <script>
                     var sec = 5;
                     redirectMessage();
                     var msgTimer = setInterval(function () {
                         redirectMessage();
                     }, 1000);
-                    
+
                     function redirectMessage() {
                         document.getElementById("redirect_message").innerHTML =
-                                " Redirected within (" + (sec--) + ") seconds";
+                                " Redirected within " + (sec--) + " second(s).";
 
                         if (sec === 0) {
                             stop();
@@ -25,14 +28,19 @@
 
                     function stop() {
                         clearInterval(msgTimer);
-                        window.location = "<?php echo base_url(); ?>/users"
+                        window.location = "<?php echo base_url() . $this->session->userdata('route_path'); ?>"
                     }
-
-
                 </script>
-            </h6>
-        </div>
-    <?php } ?>
+            </div>
+    <?php } else { ?>
+            <div style="margin-bottom: 0;" class="alert alert-success" id="edit_succ">
+                <h6> 
+        <?php echo $status; ?>  
+                </h6>
+            </div>
+        <?php }
+    } // end of $_POST
+    ?>
 
     <div class="container">
         <form id="login_form" role="form" class="form-signin" method="post">
