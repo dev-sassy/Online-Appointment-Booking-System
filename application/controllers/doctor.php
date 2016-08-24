@@ -23,7 +23,7 @@ class doctor extends CI_Controller {
             $data['content'] = $this->load->view("doctor/view_doctor", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -33,6 +33,8 @@ class doctor extends CI_Controller {
      */
 
     function add_doctor() {
+        $this->load->helper('form');
+
         if ($this->session->userdata('user_name')) {
             $next_user_id = (int) 1;
             $data['last_dr_id'] = $this->doctor_model->fetch_last_dr_id();
@@ -46,10 +48,22 @@ class doctor extends CI_Controller {
             $this->load->view("default_layout", $data);
 
             if ($this->input->post('add_dr')) {
-                $this->doctor_model->add_doctor();
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[15]');
+                $this->form_validation->set_rules('verify_password', 'Confirm Password', 'required|matches[password]');
+                $this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
+
+                if ($this->form_validation->run() === TRUE) {
+                    $this->doctor_model->add_doctor();
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());
+                    redirect(base_url() . 'doctor/add_doctor', 'refresh');
+                }                
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -85,6 +99,8 @@ class doctor extends CI_Controller {
      */
 
     function edit_doctor() {
+        $this->load->helper('form');
+
         if ($this->session->userdata('user_name')) {
             $id = $this->uri->segment(3);
             $data['title'] = "Edit Doctor";
@@ -92,11 +108,22 @@ class doctor extends CI_Controller {
             $data['dr'] = $this->doctor_model->edit_doctor($id);
             $data['content'] = $this->load->view("doctor/edit_doctor", $data, true);
             $this->load->view("default_layout", $data);
+
             if ($this->input->post('update_dr')) {
-                $this->doctor_model->update_doctor($id);
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
+
+                if ($this->form_validation->run() === TRUE) {
+                    $this->doctor_model->update_doctor($this->input->post('dr_id'));
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());                    
+                    redirect(base_url() . 'doctor/edit_doctor/' . $this->input->post('dr_id'), 'refresh');
+                }
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 

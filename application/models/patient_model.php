@@ -13,7 +13,7 @@ class patient_model extends CI_Model {
      * Purpose : Add new patient to patient master table and redirect to patient view page
      */
 
-    function add_paitent($pass) {
+    function add_patient($pass) {
         $data = array("patient_fname" => trim($this->input->post('firstname')),
             "patient_lname" => trim($this->input->post('lastname')),
             "patient_username" => trim($this->input->post('username')),
@@ -92,7 +92,7 @@ class patient_model extends CI_Model {
 
     /*
      * Function Name : edit_patient()
-     * Purpose : Fetch information of specific patient and redirect to patient view page
+     * Purpose : Fetch information of specific patient and redirect to patient edit page
      */
 
     function edit_patient($id) {
@@ -130,22 +130,82 @@ class patient_model extends CI_Model {
      */
 
     function add_diagnosis($p_id) {
-        /*$username = $this->session->userdata('user_name');
+        $dr_id = $this->fetch_dr_id();
+        $data = array("pdr_date" => date('Y-m-d'),
+            "pdr_detail" => trim($this->input->post('description')),
+            "patient_id" => $p_id,
+            "dr_id" => $dr_id,
+            "updated_on" => date('Y-m-d'));
+        $this->db->insert($this->diagnosis_table, $data);
+        redirect(base_url() . 'patient');
+    }
+
+    /*
+     * Function Name : fetch_diagnois_record()
+     * Purpose : Fetch Diagnosis Record from diagnosis_record table
+     */
+
+    function fetch_diagnois_record() {
+        $dr_id = $this->fetch_dr_id();
+        $this->db->select('d.pdr_id,d.pdr_detail,d.pdr_date,p.patient_username,p.patient_fname,p.patient_lname,m.dr_user_name,m.dr_name');
+        $this->db->from('diagnosis_record d');
+        $this->db->join('patient_master p', 'd.patient_id = p.patient_id');
+        $this->db->join('doctor_master m', 'd.dr_id = m.dr_id');
+        $this->db->where('d.dr_id', $dr_id);
+        if ($this->uri->segment(3)) {
+            $this->db->where('d.patient_id', $this->uri->segment(3));
+        }
+        $q = $this->db->get();
+        if ($q->num_rows() >= 1) {
+            return $q->result();
+        }
+    }
+
+    /*
+     * Function Name : fetch_dr_id()
+     * Purpose : Fetch doctor id for doctor master based on doctor username.
+     */
+
+    function fetch_dr_id() {
+        $username = $this->session->userdata('user_name');
         $this->db->select('dr_id');
-        $this->db->where('dr_user_name',$username);
+        $this->db->where('dr_user_name', $username);
         $dr_id = $this->db->get('doctor_master');
         if ($dr_id->num_rows() >= 1) {
             foreach ($dr_id->result_array() as $row) {
                 $dr_id = $row['dr_id'];
+                return $dr_id;
             }
-        }*/
-        $data = array("pdr_date"=>date('Y-m-d'),
-            "pdr_detail"=>trim($this->input->post('description')),
-            "patient_id"=>$p_id,
-            //"dr_id"=>$dr_id,
-            "updated_on"=>date('Y-m-d'));
-        $this->db->insert($this->diagnosis_table, $data);
-        redirect(base_url() . 'patient');
+        }
+    }
+
+    /*
+     * Function Name : edit_diagnois_record()
+     * Purpose : Fetch information of specific diagnois record and redirect to diagnois edit page.
+     */
+
+    function edit_diagnois_record($id) {
+        $this->db->where("pdr_id", $id);
+        $q = $this->db->get($this->diagnosis_table);
+        if ($q->num_rows() >= 1) {
+            return $q->result_array();
+        }
+    }
+
+    /*
+     * Function Name : update_diagnois_record()
+     * Purpose : Update specific diagnois record and redirect to patient view page
+     */
+
+    function update_diagnois_record($id) {
+        $data = array("pdr_detail" => trim($this->input->post('description')));
+        $this->db->where('pdr_id', $id);
+        $this->db->update($this->diagnosis_table, $data);
+        if ($this->uri->segment(4)) {
+            redirect(base_url() . 'patient/view_diagnois_record/' . $this->uri->segment(4));
+        } else {
+            redirect(base_url() . 'patient/view_diagnois_record');
+        }
     }
 
 }

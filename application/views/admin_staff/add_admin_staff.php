@@ -6,49 +6,126 @@
             </header>
             <div class="panel-body">
                 <div class="col-md-6">
-                    <form id="add_asd_form" role="form" class="cmxform form-horizontal adminex-form" method="post">
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">First Name : </label>
-                                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" maxlength="25"  />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Last Name : </label>
-                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" maxlength="25"  />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">User Name : </label>
-                                <input type="text" class="form-control" name="username" value="ADS<?php echo $next_user_id; ?>" id="username" placeholder="User Name" maxlength="10"  readonly />
-                                <label id="mail_err"></label>
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Password : </label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" maxlength="14"  />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Verify Password : </label>
-                                <input type="password" class="form-control" name="verify_password" id="verify_password" placeholder="Verify Password" maxlength="14"  />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Email : </label>
-                                <input type="text" class="form-control" name="email" id="email" placeholder="Admin Staff Email" maxlength="30"  />
-                            </div>
-                        </div>
+                    <?php
+                    echo $this->session->flashdata('error_message');
+
+                    $attributes = array('id' => 'add_asd_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    echo form_open('admin_staff/add_admin_staff', $attributes);
+
+                    $firstname_field = array(
+                        'name' => 'firstname',
+                        'id' => 'firstname',
+                        'value' => '',
+                        'maxlength' => '20',
+                        'class' => 'form-control',
+                        'placeholder' => 'First Name'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-primary" name="add_ads" id="add_ads" value="Add Admin Staff"/>
-                            <a href="<?php echo base_url() . 'admin_Staff' ?>" class="btn btn-default"> Cancel </a>                            
+                            <?php echo form_label('First Name :', 'firstname'); ?>
+                            <?php echo form_input($firstname_field); ?>
                         </div>
-                    </form>
+                    </div>
+
+                    <?php
+                    $lastname_field = array(
+                        'name' => 'lastname',
+                        'id' => 'lastname',
+                        'value' => '',
+                        'maxlength' => '20',
+                        'class' => 'form-control',
+                        'placeholder' => 'Last Name'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('Last Name :', 'lastname'); ?>
+                            <?php echo form_input($lastname_field); ?>
+                        </div>
+                    </div>
+
+                    <?php
+                    $username_field = array(
+                        'name' => 'username',
+                        'id' => 'username',
+                        'value' => 'ADS' . $next_user_id,
+                        'class' => 'form-control',
+                        'placeholder' => 'User Name',
+                        'readonly' => 'true'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('User Name :', 'username'); ?>
+                            <?php echo form_input($username_field); ?>
+                            <?php echo form_label('', 'mail_err'); ?>
+                        </div>
+                    </div>
+
+                    <?php
+                    $password_field = array(
+                        'name' => 'password',
+                        'id' => 'password',
+                        'value' => '',
+                        'maxlength' => '15',
+                        'class' => 'form-control',
+                        'placeholder' => 'Password'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('Password :', 'password'); ?>
+                            <?php echo form_password($password_field); ?>                            
+                        </div>
+                    </div>
+
+                    <?php
+                    $confirm_password_field = array(
+                        'name' => 'verify_password',
+                        'id' => 'verify_password',
+                        'value' => '',
+                        'maxlength' => '15',
+                        'class' => 'form-control',
+                        'placeholder' => 'Verify Password'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('Verify Password :', 'verify_password'); ?>
+                            <?php echo form_password($confirm_password_field); ?>
+                        </div>
+                    </div>
+
+                    <?php
+                    $as_email_field = array(
+                        'name' => 'email',
+                        'id' => 'email',
+                        'value' => '',
+                        'class' => 'form-control',
+                        'placeholder' => 'Admin Staff Email'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('Email :', 'email'); ?>
+                            <?php echo form_input($as_email_field); ?>                            
+                        </div>
+                    </div>
+
+                    <?php
+                    $add_as_btn = array(
+                        'name' => 'add_ads',
+                        'id' => 'add_ads',
+                        'value' => 'Add Admin Staff',
+                        'class' => 'btn btn-primary'
+                    );
+                    ?>
+                    <div class="form-group col-md-12">                        
+                        <?php echo form_submit($add_as_btn); ?>     
+                        <a href="<?php echo base_url() . 'admin_Staff' ?>" class="btn btn-default"> Cancel </a>                            
+                    </div>
+                    <?php echo form_close(); ?>
                 </div>
             </div>
         </section>

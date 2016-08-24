@@ -19,15 +19,6 @@ $(document).ready(function () {
                 required: true,
                 // pattern:'^[a-zA-Z]+$'
             },
-          /*  password: {
-                minlength: 6,
-                maxlength: 15,
-                required: true,
-            },
-            verify_password: {
-                required: true,
-                equalTo: "#password"
-            },*/
             p_email: {
                 required: true,
                 pattern: "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
@@ -70,21 +61,12 @@ $(document).ready(function () {
                 maxlength: "User name must be between 2 and 10 characters!",
                 //pattern: "Please enter only alphabet characters"
             },
-           /* password: {
-                required: "Please enter the Password",
-                minlength: "Password must be between 6 and 15 characters!",
-                maxlength: "Password must be between 6 and 15 characters!",
-            },
-            verify_password: {
-                equalTo: "Your password is not matched.",
-                required: "Please enter confirm password"
-            },*/
             p_email: {
                 required: "Please enter the email address",
                 pattern: "Please enter valid email address"
             },
             p_addr: {
-                required: "Please enter paitent Address",
+                required: "Please enter patient Address",
                 minlength: "address must be between 10 and 100 characters!",
                 maxlength: "address must be between 10 and 100 characters!"
             },
@@ -110,6 +92,7 @@ $(document).ready(function () {
         }
 
     });
+
     $('#username').blur(function () {
         if ($('#username').val() != "")
         {

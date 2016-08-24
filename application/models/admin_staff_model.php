@@ -87,7 +87,7 @@ class admin_staff_model extends CI_Model {
      * Purpose : Update specific admin staff and redirect to admin staff view page
      */
 
-    function update_admin_staffr($id) {
+    function update_admin_staff($id) {
         $firstname = trim($this->input->post('firstname'));
         $lastname = trim($this->input->post('lastname'));
         $email = trim($this->input->post('email'));

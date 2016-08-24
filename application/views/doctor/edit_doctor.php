@@ -6,30 +6,77 @@
             </header>
             <div class="panel-body">
                 <div class="col-md-6">
-                    <form method="post" id="add_dr_form" role="form" class="cmxform form-horizontal adminex-form">
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">First Name : </label>
-                                <input type="text" class="form-control" id="firstname" name="firstname" maxlength="25" value="<?php echo $dr[0]['dr_name'] ?>"  placeholder="First Name" />                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">User Name : </label>
-                                <input type="text" class="form-control" id="username" name="username" maxlength="10" value="<?php echo $dr[0]['dr_user_name'] ?>" placeholder="User Name" readonly />
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <div class="col-md-12">
-                                <label for="exampleInputEmail1">Doctor Email : </label>
-                                <input type="text" class="form-control" id="dr_email" name="dr_email" maxlength="50" value="<?php echo $dr[0]['dr_email'] ?>" placeholder="Doctor Email" />
-                                <label id="mail_err"></label>
-                            </div>
-                        </div>
+                    <?php
+                    echo $this->session->flashdata('error_message');
+
+                    $attributes = array('id' => 'edit_dr_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    $hidden_dr_id = array('dr_id' => $dr[0]['dr_id']);
+                    echo form_open('doctor/edit_doctor', $attributes, $hidden_dr_id);
+                    ?>
+                    
+                    <?php
+                    $firstname_field = array(
+                        'name' => 'firstname',
+                        'id' => 'firstname',
+                        'value' => $dr[0]['dr_name'],
+                        'maxlength' => '20',
+                        'class' => 'form-control',
+                        'placeholder' => 'First Name'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-primary" name="update_dr" id="update_dr" value="Update"/>
-                            <a href="<?php echo base_url() . 'doctor' ?>" class="btn btn-default"> Cancel </a>                            
+                            <?php echo form_label('First Name :', 'firstname'); ?>
+                            <?php echo form_input($firstname_field); ?>
                         </div>
-                    </form>
+                    </div>
+
+                    <?php
+                    $username_field = array(
+                        'name' => 'username',
+                        'id' => 'username',
+                        'value' => $dr[0]['dr_user_name'],
+                        'class' => 'form-control',
+                        'placeholder' => 'User Name',
+                        'readonly' => 'true'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('User Name :', 'username'); ?>
+                            <?php echo form_input($username_field); ?>
+                        </div>
+                    </div>
+
+                    <?php
+                    $doctor_email_field = array(
+                        'name' => 'dr_email',
+                        'id' => 'dr_email',
+                        'value' => $dr[0]['dr_email'],
+                        'class' => 'form-control',
+                        'placeholder' => 'Doctor Email'
+                    );
+                    ?>
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <?php echo form_label('Doctor Email :', 'dr_email'); ?>
+                            <?php echo form_input($doctor_email_field); ?>                            
+                        </div>
+                    </div>
+
+                    <?php
+                    $update_doctor_btn = array(
+                        'name' => 'update_dr',
+                        'id' => 'update_dr',
+                        'value' => 'Update',
+                        'class' => 'btn btn-primary'
+                    );
+                    ?>
+                    <div class="form-group col-md-12">                        
+                        <?php echo form_submit($update_doctor_btn); ?>     
+                        <a href="<?php echo base_url() . 'doctor' ?>" class="btn btn-default"> Cancel </a>                            
+                    </div>
+                    <?php echo form_close(); ?>     
                 </div>
             </div>
         </section>

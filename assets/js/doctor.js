@@ -64,8 +64,9 @@ $(document).ready(function () {
         }
 
     });
+
     $('#username').blur(function () {
-        if ($('#username').val() != "")
+        if ($('#username').val() !== "")
         {
             $.ajax({
                 url: "../doctor/chk_username",

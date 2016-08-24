@@ -24,7 +24,7 @@ class patient extends CI_Controller {
             $data['content'] = $this->load->view("patient/view_patient", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -34,6 +34,8 @@ class patient extends CI_Controller {
      */
 
     function add_patient() {
+        $this->load->helper('form');
+
         if ($this->session->userdata('user_name')) {
             $pass = random_string('alnum', 6);
             $next_user_id = (int) 1;
@@ -46,11 +48,28 @@ class patient extends CI_Controller {
             $data['js'] = array("patient");
             $data['content'] = $this->load->view("patient/add_patient", $data, true);
             $this->load->view("default_layout", $data);
+
             if ($this->input->post('add_p')) {
-                $this->patient_model->add_paitent($pass);
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('p_email', 'Patient email', 'trim|required|valid_email');
+                $this->form_validation->set_rules('p_addr', 'Patient address', 'trim|required|min_length[10]|max_length[100]');
+                $this->form_validation->set_rules('p_contact', 'Patient contact', 'trim|required|min_length[10]|max_length[10]|regex_match[/^[0-9]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_name', 'Patient emergency contact name', 'trim|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z ]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_num', 'Patient emergency contact number', 'trim|min_length[10]|max_length[10]|regex_match[/^[0-9]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_rel', 'Patient emergency contact relationship', 'trim|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z ]+$/]');
+
+                if ($this->form_validation->run() === TRUE) {
+                    $this->patient_model->add_patient($pass);
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());
+                    redirect(base_url() . 'patient/add_patient', 'refresh');
+                }
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -86,6 +105,8 @@ class patient extends CI_Controller {
      */
 
     function edit_patient() {
+        $this->load->helper('form');
+
         if ($this->session->userdata('user_name')) {
             $id = $this->uri->segment(3);
             $data['p_edit'] = $this->patient_model->edit_patient($id);
@@ -93,13 +114,35 @@ class patient extends CI_Controller {
             $data['js'] = array("patient");
             $data['content'] = $this->load->view("patient/edit_patient", $data, true);
             $this->load->view("default_layout", $data);
+
             if ($this->input->post('update_p')) {
-                $this->patient_model->update_patient($id);
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('p_email', 'Patient email', 'trim|required|valid_email');
+                $this->form_validation->set_rules('p_addr', 'Patient address', 'trim|required|min_length[10]|max_length[100]');
+                $this->form_validation->set_rules('p_contact', 'Patient contact', 'trim|required|min_length[10]|max_length[10]|regex_match[/^[0-9]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_name', 'Patient emergency contact name', 'trim|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z ]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_num', 'Patient emergency contact number', 'trim|min_length[10]|max_length[10]|regex_match[/^[0-9]+$/]');
+                $this->form_validation->set_rules('p_eme_contact_rel', 'Patient emergency contact relationship', 'trim|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z ]+$/]');
+
+                if ($this->form_validation->run() === TRUE) {
+                    $this->patient_model->update_patient($this->input->post('patient_id'));
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());
+                    redirect(base_url() . 'patient/edit_patient/' . $this->input->post('patient_id'), 'refresh');
+                }
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
+
+    /*
+     * Function Name : add_diagnosis()
+     * Purpose : Add patient wise diagnosis and redirect to patient view page
+     */
 
     function add_diagnosis() {
         if ($this->session->userdata('user_name')) {
@@ -112,7 +155,47 @@ class patient extends CI_Controller {
                 $this->patient_model->add_diagnosis($p_id);
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
+        }
+    }
+
+    /*
+     * Function Name : view_diagnois_record()
+     * Purpose : View patient wise diagnosis and redirect to diagnosis view page
+     */
+
+    function view_diagnois_record() {
+        if ($this->session->userdata('user_name')) {
+            $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
+            $data['pdr_count'] = count($data['pdr_list']);
+            $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
+            $data['pdr_count'] = count($data['pdr_list']);
+            $data['title'] = "Diagnosis Record";
+            $data['content'] = $this->load->view("diagnosis/view_diagnosis_record", $data, true);
+            $this->load->view("default_layout", $data);
+        } else {
+            redirect(base_url() . $this->session->userdata('route_path'));
+        }
+    }
+
+    /*
+     * Function Name : edit_diagnois_record()
+     * Purpose : Edit diagnosis and redirect to diagnosis view page
+     */
+
+    function edit_diagnois_record() {
+        if ($this->session->userdata('user_name')) {
+            $id = $this->uri->segment(3);
+            $data['pdr_edit'] = $this->patient_model->edit_diagnois_record($id);
+            $data['title'] = "Edit Diagnois";
+            $data['js'] = array("diagnosis");
+            $data['content'] = $this->load->view("diagnosis/edit_diagnosis", $data, true);
+            $this->load->view("default_layout", $data);
+            if ($this->input->post('update_pdr')) {
+                $this->patient_model->update_diagnois_record($id);
+            }
+        } else {
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 

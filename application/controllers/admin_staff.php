@@ -9,7 +9,7 @@ class admin_staff extends CI_Controller {
         parent :: __construct();
         $this->load->model('admin_staff_model');
     }
-    
+
     /*
      * Function Name : index()
      * Purpose : Fetch admin staff from admin_staff table and display it on admin_staff view page    
@@ -23,7 +23,7 @@ class admin_staff extends CI_Controller {
             $data['content'] = $this->load->view("admin_staff/view_admin_staff", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -33,6 +33,8 @@ class admin_staff extends CI_Controller {
      */
 
     function add_admin_staff() {
+        $this->load->helper('form');
+
         if ($this->session->userdata('user_name')) {
             $next_user_id = (int) 1;
             $data['last_asd_id'] = $this->admin_staff_model->fetch_last_asd_id();
@@ -46,10 +48,23 @@ class admin_staff extends CI_Controller {
             $this->load->view("default_layout", $data);
 
             if ($this->input->post('add_ads')) {
-                $this->admin_staff_model->add_admin_staff();
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[15]');
+                $this->form_validation->set_rules('verify_password', 'Confirm Password', 'required|matches[password]');
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+                if ($this->form_validation->run() === TRUE) {
+                    $this->admin_staff_model->add_admin_staff();
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());
+                    redirect(base_url() . 'admin_staff/add_admin_staff', 'refresh');
+                }                
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
@@ -69,6 +84,8 @@ class admin_staff extends CI_Controller {
      */
 
     function edit_staff() {
+        $this->load->helper('form');
+        
         if ($this->session->userdata('user_name')) {
             $id = $this->uri->segment(3);
             $data['title'] = "Edit Admin Staff";
@@ -76,11 +93,23 @@ class admin_staff extends CI_Controller {
             $data['asd'] = $this->admin_staff_model->edit_admin_staff($id);
             $data['content'] = $this->load->view("admin_staff/edit_admin_staff", $data, true);
             $this->load->view("default_layout", $data);
+            
             if ($this->input->post('update_asd')) {
-                $this->admin_staff_model->update_admin_staffr($id);
+                $this->load->library('form_validation');
+
+                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');                
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+                if ($this->form_validation->run() === TRUE) {                    
+                    $this->admin_staff_model->update_admin_staff($this->input->post('a_id'));
+                } else {
+                    $this->session->set_flashdata('error_message', validation_errors());
+                    redirect(base_url() . 'admin_staff/edit_staff/' . $this->input->post('a_id'), 'refresh');
+                }                
             }
         } else {
-            redirect(base_url());
+            redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
 
