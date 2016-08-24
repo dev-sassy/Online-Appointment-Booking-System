@@ -2,12 +2,14 @@
     <div class="col-md-12">
         <section class="panel">
             <header class="panel-heading pd-btm-25px">
-                All User
-                <div class="btn-group pull-right">
-                    <a href="<?php echo base_url() . 'doctor/add_doctor' ?>" id="editable-sample_new" class="btn btn-primary">
-                        Add New <i class="fa fa-plus"></i>
-                    </a>
-                </div>
+                All Doctors
+                <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                    <div class="btn-group pull-right">
+                        <a href="<?php echo base_url() . 'doctor/add_doctor' ?>" id="editable-sample_new" class="btn btn-primary">
+                            Add New <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                <?php } ?>
             </header>
 
             <div class="panel-body">
@@ -24,8 +26,10 @@
                                 <td>
                                     Doctor Email
                                 </td>
-                                <td></td>
-                                <td></td>
+                                <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                                    <td></td>
+                                    <td></td>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <?php
@@ -45,12 +49,14 @@
                                         <td>
                                             <?php echo $dr_list->dr_email; ?>
                                         </td>
-                                        <td>
-                                            <a href="<?php echo base_url() . 'doctor/edit_doctor/' . $dr_list->dr_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
-                                        </td>
-                                        <td>
-                                            <a href="<?php echo base_url() . 'doctor/del_doctor/' . $dr_list->dr_id; ?>" onclick="return confirm('are you sure?')"><i class="fa fa-times" aria-hidden="true" title="Delete"></i></a>
-                                        </td>
+                                        <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                                            <td>
+                                                <a href="<?php echo base_url() . 'doctor/edit_doctor/' . $dr_list->dr_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="<?php echo base_url() . 'doctor/del_doctor/' . $dr_list->dr_id; ?>" onclick="return confirm('are you sure?')"><i class="fa fa-times" aria-hidden="true" title="Delete"></i></a>
+                                            </td>
+                                        <?php } ?>
                                     </tr>
                                 <?php }
                                 ?>

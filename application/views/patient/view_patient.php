@@ -34,7 +34,10 @@
                                 </td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                                    <td></td>
+                                    <td></td>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <?php
@@ -63,9 +66,14 @@
                                         <td>
                                             <?php echo $p->patient_emergency_c_number; ?>
                                         </td>
-                                        <td>
-                                            <a href="<?php echo base_url() . 'patient/add_diagnosis/' . $p->patient_id; ?>" ><i class="fa fa-plus-circle" aria-hidden="true" title="Add Diagnosis"></i></a>
-                                        </td>
+                                        <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                                            <td>
+                                                <a href="<?php echo base_url() . 'patient/view_diagnois_record/' . $p->patient_id; ?>" ><i class="fa fa-eye" aria-hidden="true" title="View  Diagnosis"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="<?php echo base_url() . 'patient/add_diagnosis/' . $p->patient_id; ?>" ><i class="fa fa-plus-circle" aria-hidden="true" title="Add Diagnosis"></i></a>
+                                            </td>
+                                        <?php } ?>
                                         <td>
                                             <a href="<?php echo base_url() . 'patient/edit_patient/' . $p->patient_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
                                         </td>

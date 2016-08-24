@@ -35,7 +35,7 @@ $this->load->view('head',$data);
 			 <!-- page heading end-->
 			 <!--body wrapper start-->
 			 <div class="wrapper">
-				<?= $content;?>
+				<?php echo $content;?>
 			 </div>
 			 <!--body wrapper end-->
 			 <!--footer section start-->

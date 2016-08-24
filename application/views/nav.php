@@ -27,7 +27,7 @@
             <ul class="nav nav-pills nav-stacked custom-nav">
                 <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
                 <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
-                <li><a href="<?php echo base_url().'admin/logout' ?>"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
+                <li><a href="<?php echo base_url() . 'admin/logout' ?>"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
             </ul>
         </div>
 
@@ -39,86 +39,41 @@
 
             <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span> Doctor</span></a>
                 <ul class="sub-menu-list">
-                    <li><a href="<?php echo base_url().'doctor' ?>"> View All Doctor</a></li>
-                    <li><a href="<?php echo base_url().'doctor/add_doctor' ?>"> Add Doctor</a></li>
+                    <li><a href="<?php echo base_url() . 'doctor' ?>"> View All Doctor</a></li>
+                    <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                        <li><a href="<?php echo base_url() . 'doctor/add_doctor' ?>"> Add Doctor</a></li>
+                    <?php } ?>
                 </ul>
             </li>
-            
+
             <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Patient</span></a>
                 <ul class="sub-menu-list">
-                    <li><a href="<?php echo base_url().'patient' ?>"> View All Patient</a></li>
-                    <li><a href="<?php echo base_url().'patient/add_patient' ?>"> Add Patient</a></li>
+                    <li><a href="<?php echo base_url() . 'patient' ?>"> View All Patient</a></li>
+                    <li><a href="<?php echo base_url() . 'patient/add_patient' ?>"> Add Patient</a></li>
                 </ul>
             </li>
-            
+
             <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Admin Staff</span></a>
                 <ul class="sub-menu-list">
-                    <li><a href="<?php echo base_url().'admin_staff' ?>"> View All Admin Staff</a></li>
-                    <li><a href="<?php echo base_url().'admin_staff/add_admin_staff' ?>"> Add Admin Staff</a></li>
+                    <li><a href="<?php echo base_url() . 'admin_staff' ?>"> View All Admin Staff</a></li>
+                    <li><a href="<?php echo base_url() . 'admin_staff/add_admin_staff' ?>"> Add Admin Staff</a></li>
                 </ul>
             </li>
+            <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
+                <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Diagnosis Records</span></a>
+                    <ul class="sub-menu-list">
+                        <li><a href="<?php echo base_url() . 'patient/view_diagnois_record' ?>"> View Diagnosis Records</a></li>
+                    </ul>
+                </li>
+            <?php } ?>
 
-            <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Training Details</span></a>
+            <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Reports </span></a>
                 <ul class="sub-menu-list">
-                    <li><a href="training-view.php"> View All Training Details</a></li>
-                    <li><a href=""> Edit Training Details</a></li>
+                    <li><a href="<?php echo base_url() . 'reports/patient_summary' ?>"> Patient Summary</a></li>
+                    <li><a href=""> Appointment Summary</a></li>
                 </ul>
             </li>
 
-
-            <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Events Details</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="event-view.php"> View All Events Details</a></li>
-                    <li><a href=""> Edit Events Details</a></li>
-                </ul>
-            </li>
-
-
-            <li class="menu-list"><a href=""><i class="fa fa-cloud-download"></i> <span>Drop box</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="downloder-add.php"> Upload & Share</a></li>
-                    <li><a href="emailer-add.php"> Edit Emailer</a></li>
-                </ul>
-            </li>
-
-
-            <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Resumes</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="resumes-view.php"> View All Resumes</a></li>
-                </ul>
-            </li>
-
-
-<!-- <li class="menu-list"><a href=""><i class="fa fa-envelope"></i> <span> Emailers</span></a>
-<ul class="sub-menu-list">
-<li><a href=""> View All Emailers</a></li>
-<li><a href=""> Edit Emailers</a></li>
-</ul>
-</li>-->
-
-
-            <li class="menu-list"><a href=""><i class="fa fa-comments"></i> <span> Contact Enquiry</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="contact-enquires-view.php"> View All Contact Enquires</a></li>
-                    <!--<li><a href=""> Edit Contact Enquiry</a></li>-->
-                </ul>
-            </li>
-
-
-            <li class="menu-list"><a href=""><i class="fa fa-ticket"></i> <span> Testimonials</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="testimonial-view.php"> View All Testimonials</a></li>
-                    <li><a href=""> Edit Testimonials</a></li>
-                </ul>
-            </li>
-
-
-            <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Sliders</span></a>
-                <ul class="sub-menu-list">
-                    <li><a href="slider-view.php"> View All Sliders</a></li>
-                    <li><a href=""> Edit Sliders</a></li>
-                </ul>
-            </li>
 
 
         </ul>
