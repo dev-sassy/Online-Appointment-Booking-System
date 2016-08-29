@@ -14,19 +14,19 @@ class patient_model extends CI_Model {
      */
 
     function add_patient($pass) {
-        $data = array("patient_fname" => trim($this->input->post('firstname')),
-            "patient_lname" => trim($this->input->post('lastname')),
-            "patient_username" => trim($this->input->post('username')),
-            "patient_password" => md5($pass),
-            "patient_email" => trim($this->input->post('p_email')),
-            "patient_address" => trim($this->input->post('p_addr')),
-            "patient_contact" => trim($this->input->post('p_contact')),
-            "patient_emergency_c_name" => trim($this->input->post('p_eme_contact_name')),
-            "patient_emergency_c_number" => trim($this->input->post('p_eme_contact_num')),
-            "patient_emergency_c_relationship" => trim($this->input->post('p_eme_contact_rel')),
+        $data = array("p_fname" => trim($this->input->post('firstname')),
+            "p_lname" => trim($this->input->post('lastname')),
+            "p_username" => trim($this->input->post('username')),
+            "p_password" => md5($pass),
+            "p_email" => trim($this->input->post('p_email')),
+            "p_address" => trim($this->input->post('p_addr')),
+            "p_contact" => trim($this->input->post('p_contact')),
+            "p_emergency_c_name" => trim($this->input->post('p_eme_contact_name')),
+            "p_emergency_c_number" => trim($this->input->post('p_eme_contact_num')),
+            "p_emergency_c_relationship" => trim($this->input->post('p_eme_contact_rel')),
             "is_deleted" => (int) 0,
-            "is_verified" => (int) 0,
-            "created_on" => date('Y-m-d'),
+            "p_is_verified" => (int) 0,
+            "p_reg_date" => date('Y-m-d'),
             "updated_on" => date('Y-m-d')
         );
 
@@ -54,11 +54,11 @@ class patient_model extends CI_Model {
      */
 
     function fetch_last_p_id() {
-        $this->db->select_max("patient_id");
+        $this->db->select_max("p_id");
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             foreach ($q->result_array() as $row) {
-                return $row['patient_id'];
+                return $row['p_id'];
                 //echo $row['dr_id'];die;
             }
         }
@@ -72,6 +72,7 @@ class patient_model extends CI_Model {
     function fetch_patient() {
         $this->db->select('*');
         $this->db->where('is_deleted', (int) 0);
+        $this->db->order_by('p_username', 'desc');
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result();
@@ -85,7 +86,7 @@ class patient_model extends CI_Model {
 
     function del_patient($id) {
         $data = array('is_deleted' => (int) 1);
-        $this->db->where("patient_id", $id);
+        $this->db->where("p_id", $id);
         $this->db->update($this->table, $data);
         redirect(base_url() . 'patient');
     }
@@ -96,7 +97,7 @@ class patient_model extends CI_Model {
      */
 
     function edit_patient($id) {
-        $this->db->where("patient_id", $id);
+        $this->db->where("p_id", $id);
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result_array();
@@ -109,19 +110,32 @@ class patient_model extends CI_Model {
      */
 
     function update_patient($id) {
-        $data = array("patient_fname" => trim($this->input->post('firstname')),
-            "patient_lname" => trim($this->input->post('lastname')),
-            "patient_email" => trim($this->input->post('p_email')),
-            "patient_address" => trim($this->input->post('p_addr')),
-            "patient_contact" => trim($this->input->post('p_contact')),
-            "patient_emergency_c_name" => trim($this->input->post('p_eme_contact_name')),
-            "patient_emergency_c_number" => trim($this->input->post('p_eme_contact_num')),
-            "patient_emergency_c_relationship" => trim($this->input->post('p_eme_contact_rel')),
+        $data = array("p_fname" => trim($this->input->post('firstname')),
+            "p_lname" => trim($this->input->post('lastname')),
+            "p_email" => trim($this->input->post('p_email')),
+            "p_address" => trim($this->input->post('p_addr')),
+            "p_contact" => trim($this->input->post('p_contact')),
+            "p_emergency_c_name" => trim($this->input->post('p_eme_contact_name')),
+            "p_emergency_c_number" => trim($this->input->post('p_eme_contact_num')),
+            "p_emergency_c_relationship" => trim($this->input->post('p_eme_contact_rel')),
             "updated_on" => date('Y-m-d')
         );
-        $this->db->where('patient_id', $id);
+        $this->db->where('p_id', $id);
         $this->db->update($this->table, $data);
         redirect(base_url() . 'patient');
+    }
+
+    function fetch_spec_appointment($a_id) {
+        $this->db->select('a.ap_id,a.ap_date,a.ap_time,a.p_id,a.dr_id,d.dr_name,d.dr_username,p.p_fname,p.p_lname');
+        $this->db->from('appointment_master a');
+        $this->db->join('doctor_master d', 'd.dr_id = a.dr_id');
+        $this->db->join('patient_master p', 'p.p_id = a.p_id');
+        $this->db->where('a.ap_id', $a_id);
+        //$this->db->order_by('a.ap_id', 'desc');
+        $q = $this->db->get();
+        if ($q->num_rows() >= 1) {
+            return $q->result_array();
+        }
     }
 
     /*
@@ -129,15 +143,19 @@ class patient_model extends CI_Model {
      * Purpose : Add Diagnosis Record to diagnosis_record table
      */
 
-    function add_diagnosis($p_id) {
+    function add_diagnosis($a_id) {
         $dr_id = $this->fetch_dr_id();
         $data = array("pdr_date" => date('Y-m-d'),
             "pdr_detail" => trim($this->input->post('description')),
-            "patient_id" => $p_id,
-            "dr_id" => $dr_id,
+            "p_id" => trim($this->input->post('p_id')),
+            "ap_id" => $a_id,
             "updated_on" => date('Y-m-d'));
         $this->db->insert($this->diagnosis_table, $data);
-        redirect(base_url() . 'patient');
+        if ($this->uri->segment(4)) {
+            redirect(base_url() . 'patient/view_appointment_record/' . $this->uri->segment(4));
+        } else {
+            redirect(base_url() . 'appointment');
+        }
     }
 
     /*
@@ -147,13 +165,15 @@ class patient_model extends CI_Model {
 
     function fetch_diagnois_record() {
         $dr_id = $this->fetch_dr_id();
-        $this->db->select('d.pdr_id,d.pdr_detail,d.pdr_date,p.patient_username,p.patient_fname,p.patient_lname,m.dr_user_name,m.dr_name');
+        $this->db->select('d.pdr_id,d.pdr_detail,d.pdr_date,p.p_username,p.p_fname,p.p_lname');
         $this->db->from('diagnosis_record d');
-        $this->db->join('patient_master p', 'd.patient_id = p.patient_id');
-        $this->db->join('doctor_master m', 'd.dr_id = m.dr_id');
-        $this->db->where('d.dr_id', $dr_id);
+        $this->db->join('patient_master p', 'd.p_id = p.p_id');
+        $this->db->join('appointment_master a', 'a.ap_id = d.ap_id');
+        $this->db->where('a.dr_id', $dr_id);
+        $this->db->where('a.is_cancel', (int) 0);
+        $this->db->where('p.is_deleted', (int) 0);
         if ($this->uri->segment(3)) {
-            $this->db->where('d.patient_id', $this->uri->segment(3));
+            $this->db->where('d.ap_id', $this->uri->segment(3));
         }
         $q = $this->db->get();
         if ($q->num_rows() >= 1) {
@@ -169,7 +189,7 @@ class patient_model extends CI_Model {
     function fetch_dr_id() {
         $username = $this->session->userdata('user_name');
         $this->db->select('dr_id');
-        $this->db->where('dr_user_name', $username);
+        $this->db->where('dr_username', $username);
         $dr_id = $this->db->get('doctor_master');
         if ($dr_id->num_rows() >= 1) {
             foreach ($dr_id->result_array() as $row) {

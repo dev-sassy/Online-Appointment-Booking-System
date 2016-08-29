@@ -22,10 +22,10 @@ $(document).ready(function () {
                 required: true,
                 equalTo: "#password"
             },
-            dr_email: {
+            /*dr_email: {
                 required: true,
                 pattern: "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-            },
+            },*/
         },
         messages: {
             firstname: {
@@ -49,10 +49,10 @@ $(document).ready(function () {
                 equalTo: "Your password is not matched.",
                 required: "Please enter confirm password"
             },
-            dr_email: {
+            /*dr_email: {
                 required: "Please enter the email address",
                 pattern: "Please enter valid email address"
-            },
+            },*/
         }
     });
 
@@ -71,6 +71,7 @@ $(document).ready(function () {
             $.ajax({
                 url: "../doctor/chk_username",
                 type: "POST",
+                dataType : 'json',
                 data: {id: this.value},
                 success: function (data) {
                     if (data == 'UserName already exist')

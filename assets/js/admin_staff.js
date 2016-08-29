@@ -28,10 +28,6 @@ $(document).ready(function () {
                 required: true,
                 equalTo: "#password"
             },
-            email: {
-                required: true,
-                pattern: "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-            },
         },
         messages: {
             firstname: {
@@ -60,10 +56,6 @@ $(document).ready(function () {
             verify_password: {
                 equalTo: "Your password is not matched.",
                 required: "Please enter confirm password"
-            },
-            email: {
-                required: "Please enter the email address",
-                pattern: "Please enter valid email address"
             },
         }
     });

@@ -6,7 +6,7 @@ class staff_login_model extends CI_Model {
         $user_name = trim($this->input->post('username'));
         $pass = md5($this->input->post('password'));
 
-        $this->db->where('as_id', $user_name);
+        $this->db->where('as_username', $user_name);
         $this->db->where('as_password', $pass);
         $this->db->where('is_deleted', (int) 0);
         $q = $this->db->get('admin_staff');

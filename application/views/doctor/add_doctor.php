@@ -8,8 +8,7 @@
                 <div class="col-md-6">                    
                     <?php
                     echo $this->session->flashdata('error_message');
-
-                    $attributes = array('id' => 'add_dr_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    $attributes = array('id' => 'add_dr_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form', 'enctype' => 'multipart/form-data');
                     echo form_open('doctor/add_doctor', $attributes);
 
                     $firstname_field = array(
@@ -79,7 +78,14 @@
                             <?php echo form_password($confirm_password_field); ?>
                         </div>
                     </div>
-
+                    
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <label>Doctor Pic</label>
+                            <input type="file" name="userfile" id="userfile" size="20" class="form-control" />
+                        </div>
+                    </div>
+                    
                     <?php
                     $doctor_email_field = array(
                         'name' => 'dr_email',
@@ -91,8 +97,8 @@
                     ?>
                     <div class="form-group clearfix">
                         <div class="col-md-12">
-                            <?php echo form_label('Doctor Email :', 'dr_email'); ?>
-                            <?php echo form_input($doctor_email_field); ?>                            
+                            <?php //echo form_label('Doctor Email :', 'dr_email'); ?>
+                            <?php //echo form_input($doctor_email_field); ?>                            
                         </div>
                     </div>
 

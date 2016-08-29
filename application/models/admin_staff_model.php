@@ -15,9 +15,8 @@ class admin_staff_model extends CI_Model {
     function add_admin_staff() {
         $data = array("as_fname" => trim($this->input->post('firstname')),
             "as_lname" => trim($this->input->post('lastname')),
-            "as_id" => trim($this->input->post('username')),
+            "as_username" => trim($this->input->post('username')),
             "as_password" => md5($this->input->post('password')),
-            "as_email" => trim($this->input->post('email')),
             "is_deleted" => (int) 0,
             "created_on" => date('Y-m-d'),
             "updated_on" => date('Y-m-d')
@@ -33,11 +32,11 @@ class admin_staff_model extends CI_Model {
      */
 
     function fetch_last_asd_id() {
-        $this->db->select_max("a_id");
+        $this->db->select_max("as_id");
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             foreach ($q->result_array() as $row) {
-                return $row['a_id'];
+                return $row['as_id'];
                 //echo $row['dr_id'];die;
             }
         }
@@ -64,7 +63,7 @@ class admin_staff_model extends CI_Model {
 
     function del_staff($id) {
         $data = array('is_deleted' => (int) 1);
-        $this->db->where("a_id", $id);
+        $this->db->where("as_id", $id);
         $this->db->update($this->table, $data);
         redirect(base_url() . 'admin_staff');
     }
@@ -75,7 +74,7 @@ class admin_staff_model extends CI_Model {
      */
 
     function edit_admin_staff($id) {
-        $this->db->where("a_id", $id);
+        $this->db->where("as_id", $id);
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result_array();
@@ -90,12 +89,10 @@ class admin_staff_model extends CI_Model {
     function update_admin_staff($id) {
         $firstname = trim($this->input->post('firstname'));
         $lastname = trim($this->input->post('lastname'));
-        $email = trim($this->input->post('email'));
         $data = array("as_fname" => $firstname,
             "as_lname" => $lastname,
-            "as_email" => $email,
             "updated_on" => date('Y-m-d'));
-        $this->db->where('a_id', $id);
+        $this->db->where('as_id', $id);
         $this->db->update($this->table, $data);
         redirect(base_url() . 'admin_staff');
     }

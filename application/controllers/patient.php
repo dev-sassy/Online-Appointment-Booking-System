@@ -8,6 +8,7 @@ class patient extends CI_Controller {
     function patient() {
         parent :: __construct();
         $this->load->model('patient_model');
+        $this->load->model('appointment_model');
         $this->load->helper('string');
     }
 
@@ -24,7 +25,11 @@ class patient extends CI_Controller {
             $data['content'] = $this->load->view("patient/view_patient", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            //redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -51,7 +56,6 @@ class patient extends CI_Controller {
 
             if ($this->input->post('add_p')) {
                 $this->load->library('form_validation');
-
                 $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
                 $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
                 $this->form_validation->set_rules('p_email', 'Patient email', 'trim|required|valid_email');
@@ -69,21 +73,24 @@ class patient extends CI_Controller {
                 }
             }
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
     /*
-     * Function Name : chk_username()
-     * Purpose : Check for user name weather its unique or not, on change event of username field
+     * Function Name : chk_p_email()
+     * Purpose : Check for email weather its unique or not, on change event of username field
      */
 
-    function chk_username() {
+    function chk_p_email() {
         $user_name = $this->input->post('id');
-        $this->db->where('patient_username', $user_name);
+        $this->db->where('p_email', $user_name);
         $q = $this->db->get('patient_master');
         if ($q->num_rows() >= 1) {
-            echo "UserName already exist";
+            echo "Email already exist";
         } else {
             echo "valid";
         }
@@ -135,7 +142,10 @@ class patient extends CI_Controller {
                 }
             }
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -148,14 +158,19 @@ class patient extends CI_Controller {
         if ($this->session->userdata('user_name')) {
             $data['title'] = "Add Diagnosis";
             $data['js'] = array("diagnosis");
+            $a_id = $this->uri->segment(3);
+            $data['a_detail'] =  $this->patient_model->fetch_spec_appointment($a_id);
             $data['content'] = $this->load->view("diagnosis/add_diagnosis", $data, true);
-            $this->load->view("default_layout", $data);
             if ($this->input->post('add_pdr')) {
-                $p_id = $this->uri->segment(3);
-                $this->patient_model->add_diagnosis($p_id);
+                $this->patient_model->add_diagnosis($a_id);
             }
+            
+            $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -168,13 +183,29 @@ class patient extends CI_Controller {
         if ($this->session->userdata('user_name')) {
             $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
             $data['pdr_count'] = count($data['pdr_list']);
-            $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
-            $data['pdr_count'] = count($data['pdr_list']);
             $data['title'] = "Diagnosis Record";
             $data['content'] = $this->load->view("diagnosis/view_diagnosis_record", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
+        }
+    }
+    
+    function view_appointment_record() {
+        if ($this->session->userdata('user_name')) {
+            $data['a_list'] = $this->appointment_model->fetch_all_appointment();
+            $data['a_count'] = count($data['a_list']);
+            $data['title'] = "View Appointment";
+            $data['content'] = $this->load->view("appointment/view_appointment", $data, true);
+            $this->load->view("default_layout", $data);
+        } else {
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -195,7 +226,10 @@ class patient extends CI_Controller {
                 $this->patient_model->update_diagnois_record($id);
             }
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 

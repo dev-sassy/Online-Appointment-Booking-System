@@ -6,7 +6,7 @@ class doctor_login_model extends CI_Model {
         $user_name = trim($this->input->post('username'));
         $pass = md5($this->input->post('password'));
 
-        $this->db->where('dr_user_name', $user_name);
+        $this->db->where('dr_username', $user_name);
         $this->db->where('dr_password', $pass);
         $q = $this->db->get('doctor_master');
 

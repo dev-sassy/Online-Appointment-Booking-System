@@ -22,12 +22,6 @@
                                 <td>
                                     Patient Name
                                 </td>
-                                <td>
-                                    Doctor User Name
-                                </td>
-                                <td>
-                                    Doctor Name
-                                </td>
                                 <td></td>
                             </tr>
                         </thead>
@@ -46,16 +40,10 @@
                                             <?php echo $pdr->pdr_detail; ?>
                                         </td>
                                         <td>
-                                            <?php echo $pdr->patient_username; ?>
+                                            <?php echo $pdr->p_username; ?>
                                         </td>
                                         <td>
-                                            <?php echo $pdr->patient_fname . ' ' . $pdr->patient_lname; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $pdr->dr_user_name; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $pdr->dr_name; ?>
+                                            <?php echo $pdr->p_fname . ' ' . $pdr->p_lname; ?>
                                         </td>
                                         <td>
                                             <?php if ($this->uri->segment(3)) { ?>

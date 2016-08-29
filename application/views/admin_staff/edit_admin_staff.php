@@ -9,8 +9,8 @@
                     <?php
                     echo $this->session->flashdata('error_message');
 
-                    $attributes = array('id' => 'edit_asd_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
-                    $hidden_as_id = array('a_id' => $asd[0]['a_id']);
+                    $attributes = array('id' => 'add_asd_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    $hidden_as_id = array('a_id' => $asd[0]['as_id']);
                     echo form_open('admin_staff/edit_staff', $attributes, $hidden_as_id);
 
                     $firstname_field = array(
@@ -50,7 +50,7 @@
                     $username_field = array(
                         'name' => 'username',
                         'id' => 'username',
-                        'value' => $asd[0]['as_id'],
+                        'value' => $asd[0]['as_username'],
                         'class' => 'form-control',
                         'placeholder' => 'User Name',
                         'readonly' => 'true'
@@ -63,21 +63,6 @@
                         </div>
                     </div>
 
-                    <?php
-                    $as_email_field = array(
-                        'name' => 'email',
-                        'id' => 'email',
-                        'value' => $asd[0]['as_email'],
-                        'class' => 'form-control',
-                        'placeholder' => 'Admin Staff Email'
-                    );
-                    ?>
-                    <div class="form-group clearfix">
-                        <div class="col-md-12">
-                            <?php echo form_label('Email :', 'email'); ?>
-                            <?php echo form_input($as_email_field); ?>                            
-                        </div>
-                    </div>
 
                     <?php
                     $udpate_as_btn = array(

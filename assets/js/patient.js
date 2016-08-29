@@ -85,24 +85,23 @@ $(document).ready(function () {
     });
 
     $('#add_p').click(function () {
-        if ($('#mail_err').text() == "UserName already exist")
+        if ($('#mail_err').text() == "Email already exist")
         {
-            $('#username').focus();
+            $('#p_email').focus();
             return false;
         }
 
     });
 
-    $('#username').blur(function () {
-        if ($('#username').val() != "")
+    $('#p_email').blur(function () {
+        if ($('#p_email').val() != "")
         {
             $.ajax({
-                url: "../patient/chk_username",
+                url: "../patient/chk_p_email",
                 type: "POST",
                 data: {id: this.value},
                 success: function (data) {
-
-                    if (data == 'UserName already exist')
+                    if (data == 'Email already exist')
                     {
                         $(this).focus();
                         $('#mail_err').show();

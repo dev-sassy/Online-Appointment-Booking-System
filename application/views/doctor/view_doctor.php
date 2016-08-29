@@ -18,13 +18,16 @@
                         <thead>
                             <tr>
                                 <td>
+                                    Sr No.
+                                </td>
+                                <td>
                                     User Name
                                 </td>
                                 <td>
                                     Doctor Name
                                 </td>
                                 <td>
-                                    Doctor Email
+                                    Doctor Photo
                                 </td>
                                 <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
                                     <td></td>
@@ -37,17 +40,21 @@
                             ?>
                             <tbody>
                                 <?php
+                                $i = 1; 
                                 foreach ($dr as $dr_list) {
                                     ?>
                                     <tr>
+                                        <td width="3%">
+                                            <?php echo $i++; ?>
+                                        </td>
                                         <td>
-                                            <?php echo $dr_list->dr_user_name; ?>
+                                            <?php echo $dr_list->dr_username; ?>
                                         </td>
                                         <td>
                                             <?php echo $dr_list->dr_name; ?>
                                         </td>
-                                        <td>
-                                            <?php echo $dr_list->dr_email; ?>
+                                        <td width="30%"> 
+                                            <img src="<?php echo base_url(); ?>assets/images/doctor_pic/<?php echo $dr_list->dr_photo;  ?>" alt="No Image Found" class="slider-view-img" />
                                         </td>
                                         <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
                                             <td>

@@ -8,7 +8,7 @@
     <!--notification menu start -->
     <div class="menu-right">
         <ul class="notification-menu">
-            <li>
+<!--            <li>
                 <a href="#" class="btn btn-default dropdown-toggle info-number" data-toggle="dropdown">
                     <i class="fa fa-tasks"></i>
                     <span class="badge">8</span>
@@ -176,7 +176,7 @@
                         <li class="new"><a href="">See All Notifications</a></li>
                     </ul>
                 </div>
-            </li>
+            </li>-->
             <li>
                 <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <img src="<?php echo base_url(); ?>assets/images/photos/user-avatar.png" alt="" />

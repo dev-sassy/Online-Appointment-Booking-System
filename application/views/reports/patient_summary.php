@@ -4,12 +4,12 @@
             <form id="p_report" role="form" class="cmxform form-horizontal adminex-form" method="post">
                 <div class="form-group clearfix">
                     <div class="col-md-12">
-                        <input type="text" name="from_date" id="from_date" placeholder="From Date" />
+                        <input type="text" name="from_date" id="from_date" value="<?php echo $txt_value['from_date']; ?>" placeholder="From Date" />
                     </div>
                 </div>
                 <div class="form-group clearfix">
                     <div class="col-md-12">
-                        <input type="text" name="to_date" id="to_date" placeholder="To Date" />
+                        <input type="text" name="to_date" id="to_date"  value="<?php echo $txt_value['to_date']; ?>" placeholder="To Date" />
                     </div>
                 </div>
                 <div class="form-group clearfix">
@@ -22,7 +22,7 @@
 
             <div class="panel-body">
                 <div class="adv-table table-responsive">
-                    <table  class="display table table-bordered table-striped icon-color-blk" id="dynamic-table">
+                    <table  class="display table table-bordered table-striped icon-color-blk" >
                         <thead>
                             <tr>
                                 <td>
@@ -45,13 +45,13 @@
                                     ?>
                                     <tr>
                                         <td>
-                                            <?php echo $p->patient_fname; ?>
+                                            <?php echo $p->p_fname; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_lname; ?>
+                                            <?php echo $p->p_lname; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_username; ?>
+                                            <?php echo $p->p_username; ?>
                                         </td>
                                     </tr>
                                 <?php }

@@ -7,7 +7,7 @@ class reports extends CI_Controller {
     // Define Global Variable and Other Global/Common Things Of Controller Here
     function reports() {
         parent :: __construct();
-         $this->load->model('reports_model');
+        $this->load->model('reports_model');
     }
 
     /*
@@ -30,13 +30,16 @@ class reports extends CI_Controller {
             $data['p_count'] = count($data['p_list']);
             $data['js'] = array("reports");
             $data['title'] = "Patient Summary";
-            if($this->input->post('gen_report'))
-            {
+            $data['txt_value'] = array('from_date' => '',
+                'to_date' => '');
+            if ($this->input->post('gen_report')) {
                 $data['p_list'] = $this->reports_model->fetch_patient();
                 $data['p_count'] = count($data['p_list']);
+                $data['txt_value'] = array('from_date' => $this->input->post('from_date'),
+                    'to_date' => $this->input->post('to_date'));
             }
             $data['content'] = $this->load->view("reports/patient_summary", $data, true);
-            
+
             $this->load->view("default_layout", $data);
         } else {
             redirect(base_url() . $this->session->userdata('route_path'));

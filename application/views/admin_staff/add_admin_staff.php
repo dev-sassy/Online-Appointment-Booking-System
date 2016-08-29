@@ -98,22 +98,6 @@
                     </div>
 
                     <?php
-                    $as_email_field = array(
-                        'name' => 'email',
-                        'id' => 'email',
-                        'value' => '',
-                        'class' => 'form-control',
-                        'placeholder' => 'Admin Staff Email'
-                    );
-                    ?>
-                    <div class="form-group clearfix">
-                        <div class="col-md-12">
-                            <?php echo form_label('Email :', 'email'); ?>
-                            <?php echo form_input($as_email_field); ?>                            
-                        </div>
-                    </div>
-
-                    <?php
                     $add_as_btn = array(
                         'name' => 'add_ads',
                         'id' => 'add_ads',

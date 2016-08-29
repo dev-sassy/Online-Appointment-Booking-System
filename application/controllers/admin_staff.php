@@ -23,7 +23,11 @@ class admin_staff extends CI_Controller {
             $data['content'] = $this->load->view("admin_staff/view_admin_staff", $data, true);
             $this->load->view("default_layout", $data);
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            //redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -54,7 +58,6 @@ class admin_staff extends CI_Controller {
                 $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
                 $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[15]');
                 $this->form_validation->set_rules('verify_password', 'Confirm Password', 'required|matches[password]');
-                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
                 if ($this->form_validation->run() === TRUE) {
                     $this->admin_staff_model->add_admin_staff();
@@ -64,7 +67,11 @@ class admin_staff extends CI_Controller {
                 }                
             }
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            //redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 
@@ -99,7 +106,6 @@ class admin_staff extends CI_Controller {
 
                 $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
                 $this->form_validation->set_rules('lastname', 'Last name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');                
-                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
                 if ($this->form_validation->run() === TRUE) {                    
                     $this->admin_staff_model->update_admin_staff($this->input->post('a_id'));
@@ -109,7 +115,10 @@ class admin_staff extends CI_Controller {
                 }                
             }
         } else {
-            redirect(base_url() . $this->session->userdata('route_path'));
+            if ($this->session->userdata('route_path'))
+                redirect(base_url() . $this->session->userdata('route_path'));
+            else
+                redirect(base_url() . 'users/staff');
         }
     }
 

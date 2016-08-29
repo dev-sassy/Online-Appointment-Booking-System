@@ -9,7 +9,7 @@
                     <?php
                     echo $this->session->flashdata('error_message');
 
-                    $attributes = array('id' => 'edit_dr_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    $attributes = array('id' => 'add_dr_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form', 'enctype' => 'multipart/form-data');
                     $hidden_dr_id = array('dr_id' => $dr[0]['dr_id']);
                     echo form_open('doctor/edit_doctor', $attributes, $hidden_dr_id);
                     ?>
@@ -35,7 +35,7 @@
                     $username_field = array(
                         'name' => 'username',
                         'id' => 'username',
-                        'value' => $dr[0]['dr_user_name'],
+                        'value' => $dr[0]['dr_username'],
                         'class' => 'form-control',
                         'placeholder' => 'User Name',
                         'readonly' => 'true'
@@ -47,20 +47,29 @@
                             <?php echo form_input($username_field); ?>
                         </div>
                     </div>
+                    
+                    <div class="form-group clearfix">
+                        <div class="col-md-12">
+                            <label>Doctor Pic</label>
+                            <img src="<?php echo base_url(); ?>assets/images/doctor_pic/<?php echo $dr[0]['dr_photo'];  ?>" alt="No Image Found" class="slider-view-img" />
+                            <input type="hidden" name="dr_pic_old" value="<?php echo $dr[0]['dr_photo'];  ?>" />
+                            <input type="file" name="userfile"  size="20" class="form-control valid" />
+                        </div>
+                    </div>
 
                     <?php
                     $doctor_email_field = array(
                         'name' => 'dr_email',
                         'id' => 'dr_email',
-                        'value' => $dr[0]['dr_email'],
+                        //'value' => $dr[0]['dr_email'],
                         'class' => 'form-control',
                         'placeholder' => 'Doctor Email'
                     );
                     ?>
                     <div class="form-group clearfix">
                         <div class="col-md-12">
-                            <?php echo form_label('Doctor Email :', 'dr_email'); ?>
-                            <?php echo form_input($doctor_email_field); ?>                            
+                            <?php //echo form_label('Doctor Email :', 'dr_email'); ?>
+                            <?php //echo form_input($doctor_email_field); ?>                            
                         </div>
                     </div>
 

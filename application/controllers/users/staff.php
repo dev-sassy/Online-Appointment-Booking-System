@@ -53,7 +53,8 @@ class staff extends CI_Controller {
 
     function logout() {
         $this->session->unset_userdata('user_name');
-        redirect(base_url() . $this->session->userdata('route_path'));
+        //$this->session->unset_userdata('route_path');
+        redirect(base_url() . 'users/staff');
     }
 
     function forgot_password() {

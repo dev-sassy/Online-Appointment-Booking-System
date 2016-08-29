@@ -15,6 +15,9 @@
                         <thead>
                             <tr>
                                 <td>
+                                    Sr No.
+                                </td>
+                                <td>
                                     Paitent First Name
                                 </td>
                                 <td>
@@ -34,10 +37,7 @@
                                 </td>
                                 <td></td>
                                 <td></td>
-                                <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
-                                    <td></td>
-                                    <td></td>
-                                <?php } ?>
+                                <td></td>
                             </tr>
                         </thead>
                         <?php
@@ -45,40 +45,37 @@
                             ?>
                             <tbody>
                                 <?php
+                                $i = 1;
                                 foreach ($p_list as $p) {
                                     ?>
                                     <tr>
+                                        <td width="3%"><?php echo $i++; ?></td>
                                         <td>
-                                            <?php echo $p->patient_fname; ?>
+                                            <?php echo $p->p_fname; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_lname; ?>
+                                            <?php echo $p->p_lname; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_email; ?>
+                                            <?php echo $p->p_email; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_username; ?>
+                                            <?php echo $p->p_username; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_contact; ?>
+                                            <?php echo $p->p_contact; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->patient_emergency_c_number; ?>
-                                        </td>
-                                        <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
-                                            <td>
-                                                <a href="<?php echo base_url() . 'patient/view_diagnois_record/' . $p->patient_id; ?>" ><i class="fa fa-eye" aria-hidden="true" title="View  Diagnosis"></i></a>
-                                            </td>
-                                            <td>
-                                                <a href="<?php echo base_url() . 'patient/add_diagnosis/' . $p->patient_id; ?>" ><i class="fa fa-plus-circle" aria-hidden="true" title="Add Diagnosis"></i></a>
-                                            </td>
-                                        <?php } ?>
-                                        <td>
-                                            <a href="<?php echo base_url() . 'patient/edit_patient/' . $p->patient_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
+                                            <?php echo $p->p_emergency_c_number; ?>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url() . 'patient/del_patient/' . $p->patient_id; ?>" onclick="return confirm('are you sure?')"><i class="fa fa-times" aria-hidden="true" title="Delete"></i></a>
+                                            <a href="<?php echo base_url() . 'patient/view_appointment_record/' . $p->p_id; ?>" ><i class="fa fa-eye" aria-hidden="true" title="View  Appointments"></i></a>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo base_url() . 'patient/edit_patient/' . $p->p_id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit"></i></a>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo base_url() . 'patient/del_patient/' . $p->p_id; ?>" onclick="return confirm('are you sure?')"><i class="fa fa-times" aria-hidden="true" title="Delete"></i></a>
                                         </td>
                                     </tr>
                                 <?php }

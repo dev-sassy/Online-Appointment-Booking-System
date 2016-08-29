@@ -6,8 +6,8 @@ class user_login_model extends CI_Model {
         $user_name = trim($this->input->post('username'));
         $pass = md5($this->input->post('password'));
 
-        $this->db->where('patient_username', $user_name);
-        $this->db->where('patient_password', $pass);
+        $this->db->where('p_email', $user_name);
+        $this->db->where('p_password', $pass);
         $q = $this->db->get('patient_master');
 
         if ($q->num_rows() == 1) {
@@ -21,7 +21,7 @@ class user_login_model extends CI_Model {
     function check_email_exists() {
         $forget_email = trim($_POST["forget_email"]);
 
-        $this->db->where('patient_email', $forget_email);
+        $this->db->where('p_email', $forget_email);
         $q = $this->db->get('patient_master');
 
         if ($q->num_rows() == 1) {
@@ -37,9 +37,9 @@ class user_login_model extends CI_Model {
 
     function reset_user_password($email_id) {
         $this->$email_id = trim($email_id);
-        $password = array('patient_password' => md5(trim($_POST['new_password'])));
+        $password = array('p_password' => md5(trim($_POST['new_password'])));
 
-        $this->db->where('patient_email', $this->$email_id);
+        $this->db->where('p_email', $this->$email_id);
         $this->db->update('patient_master', $password);
 
         $flag = false;

@@ -53,7 +53,8 @@ class doctor extends CI_Controller {
 
     function logout() {
         $this->session->unset_userdata('user_name');
-        redirect(base_url() . $this->session->userdata('route_path'));
+        //$this->session->unset_userdata('route_path');
+        redirect(base_url() . 'users/doctor');
     }
 
     function forgot_password() {

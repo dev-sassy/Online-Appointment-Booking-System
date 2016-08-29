@@ -1,13 +1,11 @@
-
 <div class="left-side sticky-left-side">
-
     <!--logo and iconic logo start-->
     <div class="logo">
-        <a href="index.php"><img src="<?php echo base_url(); ?>assets/images/logo.png" alt=""></a>
+        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
     </div>
 
     <div class="logo-icon text-center">
-        <a href="index.php"><img src="<?php echo base_url(); ?>assets/images/logo_icon.png" alt=""></a>
+        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
     </div>
     <!--logo and iconic logo end-->
 
@@ -25,15 +23,15 @@
 
             <h5 class="left-nav-title">Account Information</h5>
             <ul class="nav nav-pills nav-stacked custom-nav">
-                <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
-                <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+<!--                <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
+                <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>-->
                 <li><a href="<?php echo base_url() . 'admin/logout' ?>"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
             </ul>
         </div>
 
         <!--sidebar nav start-->
         <ul class="nav nav-pills nav-stacked custom-nav">
-            <li><a href=""><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
 
 <!--            <li><a href="cms-add.php"><i class="fa fa-sign-in"></i> <span>CMS Page</span></a></li>-->
 
@@ -59,6 +57,16 @@
                     <li><a href="<?php echo base_url() . 'admin_staff/add_admin_staff' ?>"> Add Admin Staff</a></li>
                 </ul>
             </li>
+            
+            <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Appointment</span></a>
+                <ul class="sub-menu-list">
+                    <li><a href="<?php echo base_url() . 'appointment' ?>"> View All Appointment</a></li>
+                    <?php if ($this->session->userdata('route_path') == 'users/staff') { ?>
+                    <li><a href="<?php echo base_url() . 'appointment/book_appointment' ?>"> Book Appointment</a></li>
+                    <?php } ?>
+                </ul>
+            </li>
+            
             <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
                 <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Diagnosis Records</span></a>
                     <ul class="sub-menu-list">
@@ -66,7 +74,12 @@
                     </ul>
                 </li>
             <?php } ?>
-
+            <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>CMS Pages</span></a>
+                <ul class="sub-menu-list">
+                    <li><a href="<?php echo base_url() . 'cms' ?>"> View All CMS PAges</a></li>
+                    <li><a href="<?php echo base_url() . 'cms/addEdit' ?>"> Add CMS Pages</a></li>
+                </ul>
+            </li>    
             <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Reports </span></a>
                 <ul class="sub-menu-list">
                     <li><a href="<?php echo base_url() . 'reports/patient_summary' ?>"> Patient Summary</a></li>

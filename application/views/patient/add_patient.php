@@ -59,7 +59,7 @@
                         <div class="col-md-12">
                             <?php echo form_label('User Name :', 'username'); ?>
                             <?php echo form_input($username_field); ?>
-                            <?php echo form_label('', 'mail_err'); ?>
+                            
                         </div>
                     </div>
 
@@ -75,7 +75,9 @@
                     <div class="form-group clearfix">
                         <div class="col-md-12">
                             <?php echo form_label('Patient Email :', 'p_email'); ?>
-                            <?php echo form_input($p_email_field); ?>                            
+                            <?php echo form_input($p_email_field); ?>      
+                            <lable id="mail_err"></lable>
+                            
                         </div>
                     </div>
 

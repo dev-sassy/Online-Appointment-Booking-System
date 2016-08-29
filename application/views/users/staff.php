@@ -25,11 +25,11 @@
                     <i class="fa fa-check"></i>
                 </button>
 
-                <label class="checkbox">
+<!--                <label class="checkbox">
                     <span class="pull-right">
                         <a href="#myModal" data-toggle="modal"> Forgot Password?</a>
                     </span>
-                </label>
+                </label>-->
             </div>
         </form>
     </div>

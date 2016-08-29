@@ -12,11 +12,12 @@ class doctor_model extends CI_Model {
      * Purpose : Add new doctor to doctor master table and redirect to doctor view page
      */
 
-    function add_doctor() {
+    function add_doctor($dr_name) {
         $data = array("dr_name" => trim($this->input->post('firstname')),
-            "dr_user_name" => trim($this->input->post('username')),
+            "dr_username" => trim($this->input->post('username')),
             "dr_password" => md5($this->input->post('password')),
-            "dr_email" => trim($this->input->post('dr_email')),
+            //"dr_email" => trim($this->input->post('dr_email')),
+            'dr_photo'=>$dr_name,
             "is_deleted" => (int) 0,
             "created_on" => date('Y-m-d'),
             "updated_on" => date('Y-m-d')
@@ -50,6 +51,7 @@ class doctor_model extends CI_Model {
     function fetch_doctor() {
         $this->db->select('*');
         $this->db->where('is_deleted', (int) 0);
+        //$this->db->order_by("dr_username", "desc");
         $q = $this->db->get($this->table);
         if ($q->num_rows() >= 1) {
             return $q->result();
@@ -86,11 +88,12 @@ class doctor_model extends CI_Model {
      * Purpose : Update specific doctor and redirect to doctor view page
      */
 
-    function update_doctor($id) {
+    function update_doctor($id,$dr_name) {
         $firstname = trim($this->input->post('firstname'));
-        $email = trim($this->input->post('dr_email'));
+        //$email = trim($this->input->post('dr_email'));
         $data = array("dr_name" => $firstname,
-            "dr_email" => $email,
+            //"dr_email" => $email,
+            "dr_photo"=>$dr_name,
             "updated_on" => date('Y-m-d'));
         $this->db->where('dr_id', $id);
         $this->db->update($this->table, $data);

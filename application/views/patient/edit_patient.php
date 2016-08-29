@@ -9,14 +9,14 @@
                     <?php
                     echo $this->session->flashdata('error_message');
 
-                    $attributes = array('id' => 'edit_p_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
-                    $hidden_patient_id = array('patient_id' => $p_edit[0]['patient_id']);
+                    $attributes = array('id' => 'add_p_form', 'role' => 'form', 'class' => 'cmxform form-horizontal adminex-form');
+                    $hidden_patient_id = array('patient_id' => $p_edit[0]['p_id']);
                     echo form_open('patient/edit_patient', $attributes, $hidden_patient_id);
 
                     $firstname_field = array(
                         'name' => 'firstname',
                         'id' => 'firstname',
-                        'value' => $p_edit[0]['patient_fname'],
+                        'value' => $p_edit[0]['p_fname'],
                         'maxlength' => '20',
                         'class' => 'form-control',
                         'placeholder' => 'First Name'
@@ -33,7 +33,7 @@
                     $lastname_field = array(
                         'name' => 'lastname',
                         'id' => 'lastname',
-                        'value' => $p_edit[0]['patient_lname'],
+                        'value' => $p_edit[0]['p_lname'],
                         'maxlength' => '20',
                         'class' => 'form-control',
                         'placeholder' => 'Last Name'
@@ -50,7 +50,7 @@
                     $username_field = array(
                         'name' => 'username',
                         'id' => 'username',
-                        'value' => $p_edit[0]['patient_username'],
+                        'value' => $p_edit[0]['p_username'],
                         'class' => 'form-control',
                         'placeholder' => 'User Name',
                         'readonly' => 'true'
@@ -68,9 +68,10 @@
                     $p_email_field = array(
                         'name' => 'p_email',
                         'id' => 'p_email',
-                        'value' => $p_edit[0]['patient_email'],
+                        'value' => $p_edit[0]['p_email'],
                         'class' => 'form-control',
-                        'placeholder' => 'Patient Email'
+                        'placeholder' => 'Patient Email',
+                         'readonly' => 'true'
                     );
                     ?>
                     <div class="form-group clearfix">
@@ -84,7 +85,7 @@
                     $p_address_field = array(
                         'name' => 'p_addr',
                         'id' => 'p_addr',
-                        'value' => $p_edit[0]['patient_address'],
+                        'value' => $p_edit[0]['p_address'],
                         'class' => 'form-control',
                         'rows' => '3',
                         'minlength' => '10',
@@ -103,7 +104,7 @@
                     $p_contact_field = array(
                         'name' => 'p_contact',
                         'id' => 'p_contact',
-                        'value' => $p_edit[0]['patient_contact'],
+                        'value' => $p_edit[0]['p_contact'],
                         'class' => 'form-control',
                         'minlength' => '10',
                         'maxlength' => '10',
@@ -122,7 +123,7 @@
                     $p_eme_contact_name_field = array(
                         'name' => 'p_eme_contact_name',
                         'id' => 'p_eme_contact_name',
-                        'value' => $p_edit[0]['patient_emergency_c_name'],
+                        'value' => $p_edit[0]['p_emergency_c_name'],
                         'maxlength' => '20',
                         'class' => 'form-control',
                         'placeholder' => 'Patient Emergency Contact Name'
@@ -139,7 +140,7 @@
                     $p_eme_contact_field = array(
                         'name' => 'p_eme_contact_num',
                         'id' => 'p_eme_contact_num',
-                        'value' => $p_edit[0]['patient_emergency_c_number'],
+                        'value' => $p_edit[0]['p_emergency_c_number'],
                         'class' => 'form-control',
                         'minlength' => '10',
                         'maxlength' => '10',
@@ -158,7 +159,7 @@
                     $p_eme_contact_rel_field = array(
                         'name' => 'p_eme_contact_rel',
                         'id' => 'p_eme_contact_rel',
-                        'value' => $p_edit[0]['patient_emergency_c_relationship'],
+                        'value' => $p_edit[0]['p_emergency_c_relationship'],
                         'maxlength' => '20',
                         'class' => 'form-control',
                         'placeholder' => 'Patient Emergency Contact Relationship'
