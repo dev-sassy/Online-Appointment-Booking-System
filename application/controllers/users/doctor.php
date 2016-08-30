@@ -40,11 +40,12 @@ class doctor extends CI_Controller {
         $this->load->view($this->route_path, $check_login);
     }
 
-    function success_login() {
+    function dashboard() {
         //$this->load->view("menu");
         if ($this->session->userdata('user_name')) {
             $data['title'] = "Dashboard Page";
             $data['content'] = $this->load->view("dashboard", '', TRUE);
+            $data['js'] = array('fullcalendar/fullcalendar.min','external-dragging-calendar');
             $this->load->view("default_layout", $data);
         } else {
             redirect(base_url() . $this->session->userdata('route_path'));

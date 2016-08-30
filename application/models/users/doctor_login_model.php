@@ -12,7 +12,7 @@ class doctor_login_model extends CI_Model {
 
         if ($q->num_rows() == 1) {
             $this->session->set_userdata('user_name', $user_name);
-            redirect(base_url() . $this->session->userdata('route_path') . '/success_login');
+            redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
         } else {
             return "Invalid User Name Or Password. Please check your login details.";
         }

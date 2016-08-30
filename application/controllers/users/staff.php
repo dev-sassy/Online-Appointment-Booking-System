@@ -25,6 +25,7 @@ class staff extends CI_Controller {
         parent:: __construct();
         $this->load->library('encrypt');
         $this->load->model('users/staff_login_model');
+        $this->load->model('appointment_model');
     }
 
     public function index() {
@@ -40,17 +41,25 @@ class staff extends CI_Controller {
         $this->load->view($this->route_path, $check_login);
     }
 
-    function success_login() {
+    function dashboard() {
         //$this->load->view("menu");
         if ($this->session->userdata('user_name')) {
             $data['title'] = "Dashboard Page";
-            $data['content'] = $this->load->view("dashboard", '', TRUE);
+            $data['dr_list'] = $this->appointment_model->fetch_all_dr();
+            $data['dr_count'] = count($data['dr_list']);
+            $data['content'] = $this->load->view("dashboard", $data, TRUE);
+            $data['js'] = array('fullcalendar/fullcalendar.min','external-dragging-calendar');
             $this->load->view("default_layout", $data);
         } else {
             redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
-
+    
+    function fetch_all_appointment()
+    {
+        $this->staff_login_model->fetch_all_appointment();
+        //echo json_encode($data["all_appointment"]);
+    }
     function logout() {
         $this->session->unset_userdata('user_name');
         //$this->session->unset_userdata('route_path');

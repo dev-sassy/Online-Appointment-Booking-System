@@ -36,6 +36,7 @@
 <script src="<?php echo base_url(); ?>assets/js/calendar/moment-2.2.1.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 
+
 <!--common scripts for all pages-->
 <script src="<?php echo base_url(); ?>assets/js/scripts.js"></script>
 

@@ -13,11 +13,44 @@ class staff_login_model extends CI_Model {
 
         if ($q->num_rows() == 1) {
             $this->session->set_userdata('user_name', $user_name);
-            redirect(base_url() . $this->session->userdata('route_path') . '/success_login');
+            redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
         } else {
             return "Invalid User Name Or Password. Please check your login details.";
         }
     }
+
+    function fetch_all_appointment() {
+        if ($this->session->userdata('route_path') == 'users/doctor' && $this->session->userdata('user_name')) {
+             $this->load->model('patient_model');
+              $dr_id = $this->patient_model->fetch_dr_id(); 
+        }
+        $this->db->select('a.ap_id,a.ap_date,a.ap_time,a.dr_id,p.p_fname,p.p_lname');
+        $this->db->from('appointment_master a');
+        $this->db->join('patient_master p', 'p.p_id = a.p_id');
+        $this->db->where('a.is_cancel', (int) 0);
+        $this->db->where('p.is_deleted', (int) 0);
+        if ($this->session->userdata('route_path') == 'users/doctor' && $this->session->userdata('user_name')) {
+            /* $this->load->model('patient_model');
+              $dr_id = $this->patient_model->fetch_dr_id(); */
+            $this->db->where('a.dr_id', $dr_id);
+        }
+        $q = $this->db->get();
+        if ($q->num_rows() > 0) {
+            $fromatted_data = [];
+            foreach ($q->result_array() as $row) {
+                /* $format = 'Y-m-d H:i:s';
+                  $date = DateTime::createFromFormat($format, $row['ap_date'] . ' ' . $row['ap_time']); */
+                $data = array("id" => $row['ap_id'],
+                    "title" => $row['p_fname'] . ' ' . $row['p_lname'],
+                    "start" => $row['ap_date'] . 'T' . $row['ap_time'],
+                    "end" => $row['ap_date'] . 'T' . $row['ap_time'],
+                    "allDay" => false);
+                array_push($fromatted_data, $data);
+            }
+            echo json_encode($fromatted_data);
+        }
+    }
+    
 
     function check_email_exists() {
         $forget_email = trim($_POST["forget_email"]);
