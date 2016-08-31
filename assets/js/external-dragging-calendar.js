@@ -1,104 +1,87 @@
-
-/* initialize the external events
- -----------------------------------------------------------------*/
-
-$('#external-events div.external-event').each(function () {
-// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-// it doesn't need to have a start or end
-    var eventObject = {
-        title: $.trim($(this).text()) // use the element's text as the event title
-    };
-    // store the Event Object in the DOM element so we can get to it later
-    $(this).data('eventObject', eventObject);
-    // make the event draggable using jQuery UI
-    $(this).draggable({
-        zIndex: 999,
-        revert: true, // will cause the event to go back to its
-        revertDuration: 0  //  original position after the drag
-    });
-});
-/* initialize the calendar
- -----------------------------------------------------------------*/
-
-var date = new Date();
-var d = date.getDate();
-var m = date.getMonth();
-var y = date.getFullYear();
-$.ajax({
-    url: '../staff/fetch_all_appointment',
-    type: 'POST',
-    data: 'type=fetch',
-    async: false,
-    success: function (response) {
-        json_events = response;
-        //console.log(json_events);
+$(document).ready(function () {
+    fetch_data();
+    if (json_events)
+    {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            eventLimit: true, // for all non-agenda views
+            editable: true,
+            events: JSON.parse(json_events),
+            eventClick: function (calEvent, jsEvent, view) {
+                disp_detail(calEvent, jsEvent, view);
+            },
+            // events: JSON.parse('[{"id":"1","title":"New Event","start":"2016-08-29T09:00:00+05:30","end":"2016-08-29T09:00:00+05:30","allDay":false}]'),
+            timeFormat: 'H(:mm)'
+        });
+    }
+    else
+    {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            editable: true,
+            timeFormat: 'H(:mm)'
+        });
     }
 });
 
-
-if (json_events)
+function fetch_data()
 {
-    $('#calendar').fullCalendar({
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,basicWeek,basicDay'
-        },
-        editable: true,
-        droppable: true, // this allows things to be dropped onto the calendar !!!
-        drop: function (date, allDay) { // this function is called when something is dropped
-
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            copiedEventObject.allDay = allDay;
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-                // if so, remove the element from the "Draggable Events" list
-                $(this).remove();
-            }
-
-        },
-        events: JSON.parse(json_events),
-        // events: JSON.parse('[{"id":"1","title":"New Event","start":"2016-08-29T09:00:00+05:30","end":"2016-08-29T09:00:00+05:30","allDay":false}]'),
-        timeFormat: 'H(:mm)'
+    $('.disp').empty();
+    var doctor = $('#dr_list').val()
+    
+    $.ajax({
+        url: '../staff/fetch_all_appointment',
+        type: 'POST',
+        //data: 'type=fetch',
+        data: {dr_id: doctor},
+        async: false,
+        success: function (response) {
+            json_events = response;
+            $('#calendar').fullCalendar('removeEvents');
+            $('#calendar').fullCalendar('addEventSource', JSON.parse(json_events));
+            $('#calendar').fullCalendar('refetchEvents')
+            // console.log(json_events);
+        }
     });
 }
-else
+
+function disp_detail(calEvent, jsEvent, view)
 {
-    $('#calendar').fullCalendar({
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,basicWeek,basicDay'
-        },
-        editable: true,
-        droppable: true, // this allows things to be dropped onto the calendar !!!
-        drop: function (date, allDay) { // this function is called when something is dropped
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            copiedEventObject.allDay = allDay;
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-                // if so, remove the element from the "Draggable Events" list
-                $(this).remove();
-            }
-        },
-        timeFormat: 'H(:mm)'
+    
+    var doctor = $('#dr_list').val()
+    $.ajax({
+        url: '../staff/app_detail',
+        type: 'POST',
+        //data: 'type=fetch',
+        data: {date: calEvent.start.format("YYYY-MM-DD"), doctor: doctor},
+        async: false,
+         beforeSend: function(){
+             $('.disp').empty();
+         },
+        success: function (response) {
+            var obj = jQuery.parseJSON(response);
+            $.each(obj, function (key, value) {
+                $('.disp').append('<div class="form-group clearfix">\n\
+                                                <div class="col-md-12">\n\
+                                                Doctor Name :<b>' + value.dr_username + '</b><br>\n\
+                                                Patient Name :<b>' + value.p_fname + ' ' + value.p_fname + '</b><br>\n\
+                                                Appointment Date :<b>' + value.ap_date + '</b><br>\n\
+                                                Appointment Time :<b>' + value.ap_time + '</b><br>\n\
+                                                <div>\n\
+                                            </div>');
+                // console.log(key + ": " + value.dr_username);
+            });
+        }
     });
 }
+
 
        

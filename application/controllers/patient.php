@@ -156,21 +156,24 @@ class patient extends CI_Controller {
 
     function add_diagnosis() {
         if ($this->session->userdata('user_name')) {
-            $data['title'] = "Add Diagnosis";
-            $data['js'] = array("diagnosis");
-            $a_id = $this->uri->segment(3);
-            $data['a_detail'] =  $this->patient_model->fetch_spec_appointment($a_id);
-            $data['content'] = $this->load->view("diagnosis/add_diagnosis", $data, true);
-            if ($this->input->post('add_pdr')) {
-                $this->patient_model->add_diagnosis($a_id);
+            if ($this->session->userdata('route_path') == 'users/doctor') {
+                $data['title'] = "Add Diagnosis";
+                $data['js'] = array("diagnosis");
+                $a_id = $this->uri->segment(3);
+                $data['a_detail'] = $this->patient_model->fetch_spec_appointment($a_id);
+                $data['content'] = $this->load->view("diagnosis/add_diagnosis", $data, true);
+                if ($this->input->post('add_pdr')) {
+                    $this->patient_model->add_diagnosis($a_id);
+                }
+                $this->load->view("default_layout", $data);
+            } else {
+                redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
             }
-            
-            $this->load->view("default_layout", $data);
         } else {
             if ($this->session->userdata('route_path'))
                 redirect(base_url() . $this->session->userdata('route_path'));
             else
-                redirect(base_url() . 'users/staff');
+                redirect(base_url() . 'users/doctor');
         }
     }
 
@@ -181,19 +184,23 @@ class patient extends CI_Controller {
 
     function view_diagnois_record() {
         if ($this->session->userdata('user_name')) {
-            $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
-            $data['pdr_count'] = count($data['pdr_list']);
-            $data['title'] = "Diagnosis Record";
-            $data['content'] = $this->load->view("diagnosis/view_diagnosis_record", $data, true);
-            $this->load->view("default_layout", $data);
+            if ($this->session->userdata('route_path') == 'users/doctor') {
+                $data['pdr_list'] = $this->patient_model->fetch_diagnois_record();
+                $data['pdr_count'] = count($data['pdr_list']);
+                $data['title'] = "Diagnosis Record";
+                $data['content'] = $this->load->view("diagnosis/view_diagnosis_record", $data, true);
+                $this->load->view("default_layout", $data);
+            } else {
+                redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
+            }
         } else {
             if ($this->session->userdata('route_path'))
                 redirect(base_url() . $this->session->userdata('route_path'));
             else
-                redirect(base_url() . 'users/staff');
+                redirect(base_url() . 'users/doctor');
         }
     }
-    
+
     function view_appointment_record() {
         if ($this->session->userdata('user_name')) {
             $data['a_list'] = $this->appointment_model->fetch_all_appointment();
@@ -216,20 +223,24 @@ class patient extends CI_Controller {
 
     function edit_diagnois_record() {
         if ($this->session->userdata('user_name')) {
-            $id = $this->uri->segment(3);
-            $data['pdr_edit'] = $this->patient_model->edit_diagnois_record($id);
-            $data['title'] = "Edit Diagnois";
-            $data['js'] = array("diagnosis");
-            $data['content'] = $this->load->view("diagnosis/edit_diagnosis", $data, true);
-            $this->load->view("default_layout", $data);
-            if ($this->input->post('update_pdr')) {
-                $this->patient_model->update_diagnois_record($id);
+            if ($this->session->userdata('route_path') == 'users/doctor') {
+                $id = $this->uri->segment(3);
+                $data['pdr_edit'] = $this->patient_model->edit_diagnois_record($id);
+                $data['title'] = "Edit Diagnois";
+                $data['js'] = array("diagnosis");
+                $data['content'] = $this->load->view("diagnosis/edit_diagnosis", $data, true);
+                $this->load->view("default_layout", $data);
+                if ($this->input->post('update_pdr')) {
+                    $this->patient_model->update_diagnois_record($id);
+                }
+            } else {
+                redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
             }
         } else {
             if ($this->session->userdata('route_path'))
                 redirect(base_url() . $this->session->userdata('route_path'));
             else
-                redirect(base_url() . 'users/staff');
+                redirect(base_url() . 'users/doctor');
         }
     }
 

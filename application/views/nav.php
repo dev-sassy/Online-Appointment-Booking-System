@@ -1,11 +1,11 @@
 <div class="left-side sticky-left-side">
     <!--logo and iconic logo start-->
     <div class="logo">
-        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
+        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/dashboard'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
     </div>
 
     <div class="logo-icon text-center">
-        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
+        <a href="<?php echo base_url() . $this->session->userdata('route_path') . '/dashboard'; ?>"><img src="<?php echo base_url(); ?>assets/images/HBMC LOGO.png" height="50px" alt=""></a>
     </div>
     <!--logo and iconic logo end-->
 
@@ -31,7 +31,7 @@
 
         <!--sidebar nav start-->
         <ul class="nav nav-pills nav-stacked custom-nav">
-            <li><a href="<?php echo base_url() . $this->session->userdata('route_path') . '/success_login'; ?>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="<?php echo base_url() . $this->session->userdata('route_path') . '/dashboard'; ?>"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
 
 <!--            <li><a href="cms-add.php"><i class="fa fa-sign-in"></i> <span>CMS Page</span></a></li>-->
 
@@ -50,13 +50,14 @@
                     <li><a href="<?php echo base_url() . 'patient/add_patient' ?>"> Add Patient</a></li>
                 </ul>
             </li>
-
+             <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
             <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Admin Staff</span></a>
                 <ul class="sub-menu-list">
                     <li><a href="<?php echo base_url() . 'admin_staff' ?>"> View All Admin Staff</a></li>
                     <li><a href="<?php echo base_url() . 'admin_staff/add_admin_staff' ?>"> Add Admin Staff</a></li>
                 </ul>
             </li>
+             <?php } ?>
             
             <li class="menu-list"><a href=""><i class="fa fa-user"></i> <span>Appointment</span></a>
                 <ul class="sub-menu-list">
@@ -80,12 +81,14 @@
                     <li><a href="<?php echo base_url() . 'cms/addEdit' ?>"> Add CMS Pages</a></li>
                 </ul>
             </li>    
+            <?php if ($this->session->userdata('route_path') == 'users/doctor') { ?>
             <li class="menu-list"><a href=""><i class="fa fa-laptop"></i> <span> Reports </span></a>
                 <ul class="sub-menu-list">
                     <li><a href="<?php echo base_url() . 'reports/patient_summary' ?>"> Patient Summary</a></li>
-                    <li><a href=""> Appointment Summary</a></li>
+                    <li><a href="<?php echo base_url() . 'reports/appointment_summary' ?>"> Appointment Summary</a></li>
                 </ul>
             </li>
+            <?php } ?>
 
 
 

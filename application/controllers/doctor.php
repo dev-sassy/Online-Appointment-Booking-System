@@ -39,41 +39,44 @@ class doctor extends CI_Controller {
         $this->load->helper('form');
 
         if ($this->session->userdata('user_name')) {
-            $dr_name = '';
-            $next_user_id = (int) 1;
-            $data['last_dr_id'] = $this->doctor_model->fetch_last_dr_id();
-            if ($data['last_dr_id']) {
-                $next_user_id = (int) $data['last_dr_id'] + 1;
-            }
-            $data['next_user_id'] = str_pad($next_user_id, 3, '0', STR_PAD_LEFT);
-            $data['title'] = "Add Doctor";
-            $data['js'] = array("doctor");
-            $data['content'] = $this->load->view("doctor/add_doctor", $data, true);
-            if ($this->input->post('add_dr')) {
-                $this->load->library('form_validation');
-                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
-                $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[15]');
-                $this->form_validation->set_rules('verify_password', 'Confirm Password', 'required|matches[password]');
-                //$this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
-
-                if ($this->form_validation->run() === TRUE) {
-                    if (!empty($_FILES['userfile']['name'])) {
-                        $dr_name = $this->dr_pic_upload();
-                    }
-                    $this->doctor_model->add_doctor($dr_name);
-                } else {
-                    $this->session->set_flashdata('error_message', validation_errors());
-                    redirect(base_url() . 'doctor/add_doctor', 'refresh');
+            if ($this->session->userdata('route_path') == 'users/doctor') {
+                $dr_name = '';
+                $next_user_id = (int) 1;
+                $data['last_dr_id'] = $this->doctor_model->fetch_last_dr_id();
+                if ($data['last_dr_id']) {
+                    $next_user_id = (int) $data['last_dr_id'] + 1;
                 }
+                $data['next_user_id'] = str_pad($next_user_id, 3, '0', STR_PAD_LEFT);
+                $data['title'] = "Add Doctor";
+                $data['js'] = array("doctor");
+                $data['content'] = $this->load->view("doctor/add_doctor", $data, true);
+                if ($this->input->post('add_dr')) {
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                    $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[15]');
+                    $this->form_validation->set_rules('verify_password', 'Confirm Password', 'required|matches[password]');
+                    //$this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
+
+                    if ($this->form_validation->run() === TRUE) {
+                        if (!empty($_FILES['userfile']['name'])) {
+                            $dr_name = $this->dr_pic_upload();
+                        }
+                        $this->doctor_model->add_doctor($dr_name);
+                    } else {
+                        $this->session->set_flashdata('error_message', validation_errors());
+                        redirect(base_url() . 'doctor/add_doctor', 'refresh');
+                    }
+                }
+                $this->load->view("default_layout", $data);
+            } else {
+                redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
             }
-            $this->load->view("default_layout", $data);
         } else {
             if ($this->session->userdata('route_path'))
                 redirect(base_url() . $this->session->userdata('route_path'));
             else
-                redirect(base_url() . 'users/staff');
+                redirect(base_url() . 'users/doctor');
         }
-        
     }
 
     function dr_pic_upload() {
@@ -118,8 +121,12 @@ class doctor extends CI_Controller {
      */
 
     function del_doctor() {
-        $id = $this->uri->segment(3);
-        $this->doctor_model->del_doctor($id);
+        if ($this->session->userdata('route_path') == 'users/doctor') {
+            $id = $this->uri->segment(3);
+            $this->doctor_model->del_doctor($id);
+        } else {
+            redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
+        }
     }
 
     /*
@@ -131,27 +138,31 @@ class doctor extends CI_Controller {
         $this->load->helper('form');
         $dr_name = '';
         if ($this->session->userdata('user_name')) {
-            $id = $this->uri->segment(3);
-            $data['title'] = "Edit Doctor";
-            $data['js'] = array("doctor");
-            $data['dr'] = $this->doctor_model->edit_doctor($id);
-            $data['content'] = $this->load->view("doctor/edit_doctor", $data, true);
-            $this->load->view("default_layout", $data);
-            if ($this->input->post('update_dr')) {
-                $this->load->library('form_validation');
-                $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
-                //$this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
-                if ($this->form_validation->run() === TRUE) {
-                    if (!empty($_FILES['userfile']['name'])) {
-                        $dr_name = $this->dr_pic_upload();
+            if ($this->session->userdata('route_path') == 'users/doctor') {
+                $id = $this->uri->segment(3);
+                $data['title'] = "Edit Doctor";
+                $data['js'] = array("doctor");
+                $data['dr'] = $this->doctor_model->edit_doctor($id);
+                $data['content'] = $this->load->view("doctor/edit_doctor", $data, true);
+                $this->load->view("default_layout", $data);
+                if ($this->input->post('update_dr')) {
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_rules('firstname', 'First name', 'trim|required|min_length[2]|max_length[20]|regex_match[/^[a-zA-Z]+$/]');
+                    //$this->form_validation->set_rules('dr_email', 'Doctor Email', 'trim|required|valid_email');
+                    if ($this->form_validation->run() === TRUE) {
+                        if (!empty($_FILES['userfile']['name'])) {
+                            $dr_name = $this->dr_pic_upload();
+                        } else {
+                            $dr_name = $this->input->post('dr_pic_old');
+                        }
+                        $this->doctor_model->update_doctor($this->input->post('dr_id'), $dr_name);
                     } else {
-                        $dr_name = $this->input->post('dr_pic_old');
+                        $this->session->set_flashdata('error_message', validation_errors());
+                        redirect(base_url() . 'doctor/edit_doctor/' . $this->input->post('dr_id'), 'refresh');
                     }
-                    $this->doctor_model->update_doctor($this->input->post('dr_id'), $dr_name);
-                } else {
-                    $this->session->set_flashdata('error_message', validation_errors());
-                    redirect(base_url() . 'doctor/edit_doctor/' . $this->input->post('dr_id'), 'refresh');
                 }
+            } else {
+                redirect(base_url() . $this->session->userdata('route_path') . '/dashboard');
             }
         } else {
             if ($this->session->userdata('route_path'))

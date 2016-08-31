@@ -7,7 +7,26 @@
                         <input type="text" name="from_date" id="from_date" class="form-control" value="<?php echo $txt_value['from_date']; ?>" placeholder="From Date" />
                     </div>
                     <div class="col-md-2">
-                        <input type="text" name="to_date" id="to_date" class="form-control" value="<?php echo $txt_value['to_date']; ?>" placeholder="To Date" />
+                        <input type="text" name="to_date" id="to_date"  class="form-control" value="<?php echo $txt_value['to_date']; ?>" placeholder="To Date" />
+                    </div>
+                    <div class="col-md-2">
+                        <select id="dr_list" name="dr_list" class="form-control m-bot15">
+                            <option selected value="">Select Doctor</option>
+                                <?php
+                                if ($dr_count >= 1) {
+                                    foreach ($dr_list as $dr_name) {
+                                        if ($txt_value && $dr_name->dr_id == $txt_value['doc']) {
+                                            ?>
+                                            <option value="<?php echo $dr_name->dr_id; ?>" selected><?php echo 'Dr. ' . $dr_name->dr_name . ' / ' . $dr_name->dr_username; ?></option>
+                                        <?php } else {
+                                            ?>
+                                            <option value="<?php echo $dr_name->dr_id; ?>"><?php echo 'Dr. ' . $dr_name->dr_name . ' / ' . $dr_name->dr_username; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                            </select>
                     </div>
                     <div class="col-md-2">
                         <input type="submit" name="gen_report" id="gen_report" class="btn btn-primary" value="Genrate" />
@@ -22,32 +41,38 @@
                         <thead>
                             <tr>
                                 <td>
-                                    First Name
+                                   Appointment Date
                                 </td>
                                 <td>
-                                    Last Name
+                                    Appointment Time
                                 </td>
                                 <td>
-                                    User ID
+                                    Doctor Name
+                                </td>
+                                <td>
+                                    Patient Name
                                 </td>
                             </tr>
                         </thead>
                         <?php
-                        if ($p_count >= 1) {
+                        if ($a_count >= 1) {
                             ?>
                             <tbody>
                                 <?php
-                                foreach ($p_list as $p) {
+                                foreach ($a_list as $a) {
                                     ?>
                                     <tr>
                                         <td>
-                                            <?php echo $p->p_fname; ?>
+                                            <?php echo $a->ap_date; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->p_lname; ?>
+                                            <?php echo $a->ap_time; ?>
                                         </td>
                                         <td>
-                                            <?php echo $p->p_username; ?>
+                                            <?php echo $a->dr_name . '/' . $a->dr_username; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $a->p_fname . '/' . $a->p_lname ; ?>
                                         </td>
                                     </tr>
                                 <?php }

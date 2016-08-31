@@ -38,7 +38,9 @@
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrap-datetimepicker/css/datetimepicker-custom.css" />
    <!--pickers css-->
    <!--Full calendar CSS-->
-   <link href="<?php echo base_url(); ?>assets/js/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+<!--   <link href="<?php echo base_url(); ?>assets/js/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />-->
+      <link href="<?php echo base_url(); ?>assets/js/fullcalendar/new/fullcalendar.css" rel="stylesheet" />
+      
    <!--Full calendar CSS-->
    <!--dropzone css-->
   <link href="<?php echo base_url(); ?>assets/js/dropzone/css/dropzone.css" rel="stylesheet"/>

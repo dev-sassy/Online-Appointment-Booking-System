@@ -45,21 +45,32 @@ class staff extends CI_Controller {
         //$this->load->view("menu");
         if ($this->session->userdata('user_name')) {
             $data['title'] = "Dashboard Page";
+            $data['js'] = array('fullcalendar/new/fullcalendar.min', 'external-dragging-calendar');
             $data['dr_list'] = $this->appointment_model->fetch_all_dr();
             $data['dr_count'] = count($data['dr_list']);
+            $data['selected_doc'] = array('doc' => '');
+            /* if($this->input->post('search'))
+              $data['selected_doc'] = array('doc'=>$this->input->post('dr_list')); */
+            
             $data['content'] = $this->load->view("dashboard", $data, TRUE);
-            $data['js'] = array('fullcalendar/fullcalendar.min','external-dragging-calendar');
             $this->load->view("default_layout", $data);
         } else {
             redirect(base_url() . $this->session->userdata('route_path'));
         }
     }
-    
-    function fetch_all_appointment()
+    function app_detail()
     {
-        $this->staff_login_model->fetch_all_appointment();
+        $data['app_detail'] = $this->staff_login_model->day_wise_app_detail($this->input->post('date'),$this->input->post('doctor'));
+        echo json_encode($data['app_detail']);
+    }
+    function fetch_all_appointment() {
+        $dr_id = $this->input->post('dr_id');
+        $this->staff_login_model->fetch_all_appointment($dr_id);
         //echo json_encode($data["all_appointment"]);
     }
+
+   
+
     function logout() {
         $this->session->unset_userdata('user_name');
         //$this->session->unset_userdata('route_path');
